@@ -6,16 +6,29 @@
 //
 
 import SwiftUI
+import MultipeerConnectivity
 
 struct ContentView: View {
+    @State private var message: String = ""
+    @State private var localNetwork = LocalNetworkSessionCoordinator()
+    @State private var showAlert = true
+    @State private var alertText = ""
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                Text(message)
+            }
+            .navigationTitle("Freed Leaderboard")
         }
-        .padding()
+        .onChange(of: localNetwork.message) { _, newValue in
+            message = newValue
+        }
+        .onAppear {
+            localNetwork.startAdvertising()
+        }
+        .onDisappear {
+            localNetwork.stopAdvertising()
+        }
     }
 }
 

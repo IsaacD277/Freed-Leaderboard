@@ -9,6 +9,23 @@
  
  import Foundation
  import MultipeerConnectivity
+
+struct leaderboardData {
+    let players: [Player]
+}
+
+struct Player: Identifiable, Codable {
+    let id: UUID
+    let name: String
+    let score: Int
+    let history: [Turn]
+}
+
+struct Turn: Identifiable, Codable {
+    let id: UUID
+    let score: Int
+    let round: Int
+}
  
  @Observable
  class LocalNetworkSessionCoordinator: NSObject {
@@ -132,7 +149,7 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         guard let text = String(data: data, encoding: .utf8) else {
             return
         }
-        message = "\(peerID.displayName) => \(text)"
+        message = text
     }
     
     func session(
