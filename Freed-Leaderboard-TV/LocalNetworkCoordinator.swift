@@ -7,25 +7,8 @@
 //  Edited by Isaac D2 on 1/2/26.
 //
  
- import Foundation
- import MultipeerConnectivity
-
-struct leaderboardData {
-    let players: [Player]
-}
-
-struct Player: Identifiable, Codable {
-    let id: UUID
-    let name: String
-    let score: Int
-    let history: [Turn]
-}
-
-struct Turn: Identifiable, Codable {
-    let id: UUID
-    let score: Int
-    let round: Int
-}
+import Foundation
+import MultipeerConnectivity
  
  @Observable
  class LocalNetworkSessionCoordinator: NSObject {
@@ -71,7 +54,7 @@ struct Turn: Identifiable, Codable {
         browser.startBrowsingForPeers()
     }
     
-    public func stopBrowing() {
+    public func stopBrowsing() {
         browser.stopBrowsingForPeers()
     }
     

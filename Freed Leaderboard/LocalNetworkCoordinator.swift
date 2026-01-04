@@ -54,7 +54,7 @@
         browser.startBrowsingForPeers()
     }
     
-    public func stopBrowing() {
+    public func stopBrowsing() {
         browser.stopBrowsingForPeers()
     }
     
@@ -80,6 +80,20 @@
             with: .reliable
         )
     }
+     
+     public func sendData(peerID: MCPeerID, message: String = "Hello, World.") throws {
+         let formattedMessage = message.data(using: .utf8)
+         try session.send(
+            formattedMessage!,
+            toPeers: [peerID],
+            // .reliable = TCP
+            // .unreliable = UDP
+            // Remember that we have added two set of configuration on the Info.plist
+            // file at the time of configuration. We want guranteed message delivery
+            // so we choose TCP/.reliable.
+            with: .reliable
+         )
+     }
 }
                                                                              
 extension LocalNetworkSessionCoordinator: MCNearbyServiceAdvertiserDelegate {

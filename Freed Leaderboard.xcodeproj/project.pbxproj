@@ -11,9 +11,22 @@
 		6B1316172F0876670062FCD4 /* Freed-Leaderboard-TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Freed-Leaderboard-TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6BB1726E2F0B293500D8E692 /* Exceptions for "Freed Leaderboard" folder in "Freed-Leaderboard-TV" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Structs/Player.swift,
+			);
+			target = 6B1316162F0876670062FCD4 /* Freed-Leaderboard-TV */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6B1315F02F0855CA0062FCD4 /* Freed Leaderboard */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6BB1726E2F0B293500D8E692 /* Exceptions for "Freed Leaderboard" folder in "Freed-Leaderboard-TV" target */,
+			);
 			path = "Freed Leaderboard";
 			sourceTree = "<group>";
 		};

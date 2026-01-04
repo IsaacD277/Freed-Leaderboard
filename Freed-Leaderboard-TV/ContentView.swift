@@ -25,9 +25,11 @@ struct ContentView: View {
         }
         .onAppear {
             localNetwork.startAdvertising()
+            localNetwork.startBrowsing()
         }
         .onDisappear {
             localNetwork.stopAdvertising()
+            localNetwork.stopBrowsing()
         }
     }
 }
