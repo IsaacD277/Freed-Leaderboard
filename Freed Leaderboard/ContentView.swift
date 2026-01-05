@@ -13,17 +13,17 @@ struct ContentView: View {
     @State private var localNetwork = LocalNetworkSessionCoordinator()
     @State private var showAlert = false
     @State private var alertText = ""
-    @State private var players: [Player] = []
+    let player = Player(id: UUID.init(), name: "Noah", score: 5100, history: [2500, 0, 2600])
+    // @State private var players: [Player] = []
     
     var body: some View {
         NavigationStack {
             List {
-                Section {
-                    Button("Add Player") {
-                        players.append(Player(id: UUID.init(), name: "Tester", score: 500, history: [0, 300, 5000]))
-                        print(players)
-                    }
-                }
+//                Section {
+//                    Button("Add Player") {
+//                    
+//                    }
+//                }
                 Section {
                     ForEach(Array(localNetwork.connectedDevices), id: \.self) { peerID in
                         HStack {
@@ -35,7 +35,7 @@ struct ContentView: View {
                                 Image(systemName: "paperplane")
                             }
                             Button {
-                                try? localNetwork.sendData(peerID: peerID, message: JSONDecoder(players))
+                                try? localNetwork.sendData(peerID: peerID, message: player.encode(String))
                             } label: {
                                 Image(systemName: "paperplane.fill")
                             }

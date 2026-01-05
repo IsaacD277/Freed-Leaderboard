@@ -81,7 +81,7 @@
         )
     }
      
-     public func sendData(peerID: MCPeerID, message: String = "Hello, World.") throws {
+     public func sendData(peerID: MCPeerID, message: String) throws {
          let formattedMessage = message.data(using: .utf8)
          try session.send(
             formattedMessage!,

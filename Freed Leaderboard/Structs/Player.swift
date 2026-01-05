@@ -20,7 +20,7 @@ import SwiftData
     }
 }
 
-@Model public class Player: Identifiable {
+public struct Player: Identifiable {
     public var id: UUID
     public var name: String
     public var score: Int
