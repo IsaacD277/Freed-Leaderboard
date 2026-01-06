@@ -22,7 +22,7 @@ import MultipeerConnectivity
         return allDevices.subtracting(connectedDevices)
     }
     private(set) var message: String = ""
-    private(set) var playerData: Data?
+    private(set) var leaderboardData: Data?
     
     
     init(peerID: MCPeerID = .init(displayName: UIDevice.current.name)) {
