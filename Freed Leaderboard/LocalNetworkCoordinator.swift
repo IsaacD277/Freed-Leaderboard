@@ -81,10 +81,9 @@
         )
     }
      
-     public func sendData(peerID: MCPeerID, message: String) throws {
-         let formattedMessage = message.data(using: .utf8)
+     public func sendData(peerID: MCPeerID, message: Data) throws {
          try session.send(
-            formattedMessage!,
+            message,
             toPeers: [peerID],
             // .reliable = TCP
             // .unreliable = UDP

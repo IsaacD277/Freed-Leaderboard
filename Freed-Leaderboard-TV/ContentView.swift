@@ -13,15 +13,21 @@ struct ContentView: View {
     @State private var localNetwork = LocalNetworkSessionCoordinator()
     @State private var showAlert = true
     @State private var alertText = ""
+    @State var player: Player = Player(id: UUID.init(), name: "Blank", score: 0, history: [])
     var body: some View {
         NavigationStack {
             VStack {
-                Text(message)
+                HStack {
+                    Text(player.name)
+                    Text(player.score, format: .number)
+                }
             }
             .navigationTitle("Freed Leaderboard")
         }
-        .onChange(of: localNetwork.message) { _, newValue in
-            message = newValue
+        .onChange(of: localNetwork.playerData) { _, newValue in
+            let data = newValue
+            let decoder = JSONDecoder()
+            player = try! decoder.decode(Player.self, from: data!)
         }
         .onAppear {
             localNetwork.startAdvertising()

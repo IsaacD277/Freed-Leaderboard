@@ -22,6 +22,7 @@ import MultipeerConnectivity
         return allDevices.subtracting(connectedDevices)
     }
     private(set) var message: String = ""
+    private(set) var playerData: Data?
     
     
     init(peerID: MCPeerID = .init(displayName: UIDevice.current.name)) {
@@ -133,6 +134,7 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
             return
         }
         message = text
+        playerData = data
     }
     
     func session(
