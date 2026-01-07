@@ -12,12 +12,11 @@ let samplePlayers: [Player] = [
     Player(name: "Ethan", history: [138, 122, 146, 159, 124, 145]),
 ]
 
-// Color Palette
-let backgroundColor = Color(red: 0.35, green: 0.25, blue: 0.55)   // Royal Purple (background)
-let accentColors = Color(red: 1.0, green: 0.8, blue: 0.2)          // Bright Yellow (accents)
-let pillBackground = Color(red: 0.95, green: 0.92, blue: 1.0)     // Light Lavender (pill background)
-let dividerColor = Color(red: 1.0, green: 0.8, blue: 0.2)         // Bright Yellow (divider)
-let textColor = Color(red: 0.2, green: 0.15, blue: 0.4)           // Dark Purple (text on pills)
+let backgroundColor = Color(red: 0.2, green: 0.3, blue: 0.5)      // Deep Blue
+let accentColors = Color(red: 1.0, green: 0.7, blue: 0.2)          // Sunny Orange
+let pillBackground = Color(red: 0.95, green: 0.95, blue: 0.98)   // Off-White
+let dividerColor = accentColors         // Sunny Orange
+let textColor = backgroundColor
 
 class Player: Codable, Identifiable {
     var id: UUID
