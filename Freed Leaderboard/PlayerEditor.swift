@@ -5,7 +5,7 @@ struct PlayerEditor: View {
     var isNew = false
 
     @State private var isDeleted = false
-    @EnvironmentObject var leaderboardData: LeaderboardData
+    @Environment(LeaderboardData.self) private var leaderboardData
     @Environment(\.dismiss) private var dismiss
 
     @State private var playerCopy = Player()

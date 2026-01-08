@@ -9,26 +9,20 @@ import SwiftUI
 import MultipeerConnectivity
 
 struct ContentView: View {
-    @EnvironmentObject var leaderboardData: LeaderboardData
+    @Environment(LeaderboardData.self) private var leaderboardData
     @State private var message: String = ""
-    @State private var localNetwork = LocalNetworkSessionCoordinator()
+    @State private var localNetwork: LocalNetworkSessionCoordinator = LocalNetworkSessionCoordinator()
     @State private var showAlert = false
     @State private var alertText = ""
     
     var body: some View {
         NavigationStack {
-            GameSetup(localNetwork: localNetwork)
-        }
-        .onAppear {
-            localNetwork.startBrowsing()
-        }
-        .onDisappear {
-            localNetwork.stopBrowsing()
+            GameSetup(localNetwork: $localNetwork)
         }
     }
 }
 
 #Preview {
     ContentView()
-        .environmentObject(LeaderboardData())
+        .environment(LeaderboardData())
 }

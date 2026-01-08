@@ -22,7 +22,7 @@ import MultipeerConnectivity
         return allDevices.subtracting(connectedDevices)
     }
     private(set) var message: String = ""
-    private(set) var leaderboardData: Data?
+    private(set) var leaderboardData: Data = Data()
     
     
     init(peerID: MCPeerID = .init(displayName: UIDevice.current.name)) {
@@ -118,6 +118,7 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         peer peerID: MCPeerID,
         didChange state: MCSessionState
     ) {
+        print("The first session function was called")
         if state == .connected {
             connectedDevices.insert(peerID)
         } else {
@@ -130,11 +131,11 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         didReceive data: Data,
         fromPeer peerID: MCPeerID,
     ) {
-        guard let text = String(data: data, encoding: .utf8) else {
-            return
-        }
-        message = text
+        print("The second session function was called")
         leaderboardData = data
+        print("LEADERBOARD DATA FROM LOCALNETWORKCOORDINATOR")
+        print(String(data: leaderboardData, encoding: .utf8)!)
+        print("END OF LOCALNETWORKCOORDINATOR PRINT")
     }
     
     func session(
@@ -143,7 +144,7 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         withName streamName: String,
         fromPeer peerID: MCPeerID
     ) {
-        
+        print("The third session function was called")
     }
     
     func session(
@@ -152,7 +153,7 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         fromPeer peerID: MCPeerID,
         with progress: Progress
     ) {
-        
+        print("The fourth session function was called")
     }
     
     func session(
@@ -162,7 +163,7 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         at localURL: URL?,
         withError error: (any Error)?
     ) {
-        
+        print("The fifth session function was called")
     }
 }
                                                                              

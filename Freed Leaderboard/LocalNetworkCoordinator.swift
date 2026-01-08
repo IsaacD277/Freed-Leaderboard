@@ -7,11 +7,12 @@
 //  Edited by Isaac D2 on 1/2/26.
 //
  
- import Foundation
- import MultipeerConnectivity
+import Foundation
+import MultipeerConnectivity
+import SwiftUI
  
- @Observable
- class LocalNetworkSessionCoordinator: NSObject {
+@Observable
+class LocalNetworkSessionCoordinator: NSObject {
     private let advertiser: MCNearbyServiceAdvertiser
     private let browser: MCNearbyServiceBrowser
     private let session: MCSession

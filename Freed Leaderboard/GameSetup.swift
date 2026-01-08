@@ -2,12 +2,12 @@ import SwiftUI
 import MultipeerConnectivity
 
 struct GameSetup: View {
-    @EnvironmentObject var leaderboardData: LeaderboardData
+    @Environment(LeaderboardData.self) private var leaderboardData
     @State private var isAddingNewPlayer = false
     @State private var isConnectingToDevice = false
     @State private var newPlayer = Player()
     @State private var peerID: MCPeerID? = nil
-    let localNetwork: NSObject
+    @Binding var localNetwork: LocalNetworkSessionCoordinator
 
     var body: some View {
         List {
@@ -27,12 +27,13 @@ struct GameSetup: View {
             }
             ToolbarItem {
                 Button {
+                    print(localNetwork.connectedDevices)
                     // Encodes the LeaderboardData to "Data" type and sends to the session
                     let encoder = JSONEncoder()
                     encoder.outputFormatting = .prettyPrinted
                     let data = try? encoder.encode(leaderboardData)
-                    print(String(data: data!, encoding: .utf8) ?? "Had to force unwrap")
-                    // try? localNetwork.sendData(peerID: peerID, message: data!)
+//                    print(String(data: data!, encoding: .utf8) ?? "Had to force unwrap")
+                    try? localNetwork.sendData(peerID: peerID!, message: data!)
                 } label: {
                     Image(systemName: "paperplane.fill")
                 }
@@ -41,7 +42,11 @@ struct GameSetup: View {
                 Button {
                     isConnectingToDevice = true
                 } label: {
-                    Image(systemName: "tv.badge.wifi.fill")
+                    if peerID == nil {
+                        Image(systemName: "tv.badge.wifi")
+                    } else {
+                        Image(systemName: "tv.badge.wifi.fill")
+                    }
                 }
             }
         }
@@ -52,7 +57,7 @@ struct GameSetup: View {
         }
         .sheet(isPresented: $isConnectingToDevice) {
             NavigationView {
-                ConnectionView(peer: $peerID)
+                ConnectionView(localNetwork: $localNetwork, peer: $peerID)
             }
         }
     }
@@ -60,5 +65,5 @@ struct GameSetup: View {
 
 #Preview {
     ContentView()
-        .environmentObject(LeaderboardData())
+        .environment(LeaderboardData())
 }

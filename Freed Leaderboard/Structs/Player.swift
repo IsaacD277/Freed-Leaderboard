@@ -19,7 +19,7 @@ struct Player: Codable, Identifiable {
         self.score = score
         self.history = history
     }
-
+    
     static var example = Player(
         "John",
         score: 3000,

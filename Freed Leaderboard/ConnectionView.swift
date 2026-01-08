@@ -9,7 +9,7 @@ import SwiftUI
 import MultipeerConnectivity
 
 struct ConnectionView: View {
-    @State private var localNetwork = LocalNetworkSessionCoordinator()
+    @Binding var localNetwork: LocalNetworkSessionCoordinator
     @Binding var peer: MCPeerID?
 
     
@@ -47,14 +47,18 @@ struct ConnectionView: View {
         }
         .onAppear {
             localNetwork.startBrowsing()
+            print("Browsing")
+            localNetwork.startAdvertising()
+            print("Advertising")
         }
         .onDisappear {
-            localNetwork.stopBrowsing()
+//            localNetwork.stopBrowsing()
+//            print("Done browsing")
         }
     }
 }
 
 #Preview {
     ContentView()
-        .environmentObject(LeaderboardData())
+        .environment(LeaderboardData())
 }

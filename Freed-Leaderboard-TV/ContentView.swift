@@ -9,11 +9,12 @@ import SwiftUI
 import MultipeerConnectivity
 
 struct ContentView: View {
-    @State private var leaderboardData = LeaderboardData()
+    @Environment(LeaderboardData.self) private var leaderboardData
     @State private var message: String = ""
     @State private var localNetwork = LocalNetworkSessionCoordinator()
     @State private var showAlert = true
     @State private var alertText = ""
+    @State private var decodedData : LeaderboardData?
 
     var body: some View {
         NavigationStack {
@@ -24,21 +25,34 @@ struct ContentView: View {
                         Text(player.score, format: .number)
                     }
                 }
+                Button("Click me") {
+                    print(leaderboardData.players)
+                }
             }
             .navigationTitle("Freed Leaderboard")
         }
         .onChange(of: localNetwork.leaderboardData) { _, newValue in
             print("RECEIVED")
             let data = newValue
-            let decoder = JSONDecoder()
-            print(leaderboardData)
+//            print("DATA BELOW")
+            print(String(data: data, encoding: .utf8)!)
+//            print("DATA ABOVE")
+//            let decoder = JSONDecoder()
             do {
-                leaderboardData = try decoder.decode(LeaderboardData.self, from: data!)
+                print("Decoding...")
+                decodedData = try JSONDecoder().decode(LeaderboardData.self, from: data)
+                print("Decoding Successful:")
+                if let decodedData {
+                    print("Inside")
+                    @Bindable var leaderboardData = leaderboardData
+                    leaderboardData.players = decodedData.players
+                }
             } catch {
-                print(error.localizedDescription)
+                print("Error")
+                print(error)
             }
 //            leaderboardData = try! decoder.decode(LeaderboardData.self, from: data!)
-            print(leaderboardData)
+//            print(decodedData)
         }
         .onAppear {
             localNetwork.startAdvertising()
@@ -53,4 +67,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environment(LeaderboardData())
 }
