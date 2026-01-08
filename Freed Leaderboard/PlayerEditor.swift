@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct EventEditor: View {
+struct PlayerEditor: View {
     @Binding var player: Player
     var isNew = false
 
@@ -12,7 +12,8 @@ struct EventEditor: View {
     @State private var isEditing = false
 
     private var isPlayerDeleted: Bool {
-        !leaderboardData.exists(player) && !isNew
+//        !leaderboardData.exists(player) && !isNew
+        false
     }
 
     var body: some View {
@@ -29,7 +30,7 @@ struct EventEditor: View {
                     ToolbarItem {
                         Button {
                             if isNew {
-                                leaderboardData.players.append(playerCopy)
+                                leaderboardData.add(playerCopy)
                                 dismiss()
                             } else {
                                 if isEditing && !isDeleted {
@@ -48,7 +49,7 @@ struct EventEditor: View {
                 .onAppear {
                     playerCopy = player // Grab a copy in case we decide to make edits.
                 }
-                .disabled(isEventDeleted)
+                .disabled(isPlayerDeleted)
             
             if isEditing && !isNew {
 
@@ -65,7 +66,7 @@ struct EventEditor: View {
             }
         }
         .overlay(alignment: .center) {
-            if isEventDeleted {
+            if isPlayerDeleted {
                 Color(UIColor.systemBackground)
                 Text("Event Deleted. Select an Event.")
                     .foregroundStyle(.secondary)

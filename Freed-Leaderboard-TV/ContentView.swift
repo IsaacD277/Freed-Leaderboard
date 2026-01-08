@@ -9,11 +9,11 @@ import SwiftUI
 import MultipeerConnectivity
 
 struct ContentView: View {
+    @State private var leaderboardData = LeaderboardData()
     @State private var message: String = ""
     @State private var localNetwork = LocalNetworkSessionCoordinator()
     @State private var showAlert = true
     @State private var alertText = ""
-    @State private var leaderboardData: LeaderboardData = LeaderboardData()
 
     var body: some View {
         NavigationStack {
@@ -28,9 +28,17 @@ struct ContentView: View {
             .navigationTitle("Freed Leaderboard")
         }
         .onChange(of: localNetwork.leaderboardData) { _, newValue in
+            print("RECEIVED")
             let data = newValue
             let decoder = JSONDecoder()
-            leaderboardData = try! decoder.decode(LeaderboardData.self, from: data!)
+            print(leaderboardData)
+            do {
+                leaderboardData = try decoder.decode(LeaderboardData.self, from: data!)
+            } catch {
+                print(error.localizedDescription)
+            }
+//            leaderboardData = try! decoder.decode(LeaderboardData.self, from: data!)
+            print(leaderboardData)
         }
         .onAppear {
             localNetwork.startAdvertising()

@@ -134,7 +134,7 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
             return
         }
         message = text
-        playerData = data
+        leaderboardData = data
     }
     
     func session(
