@@ -1,15 +1,15 @@
 import SwiftUI
 
 let samplePlayers: [Player] = [
-    Player(name: "Emma", history: [180, 165, 190, 21012, 522, 2302]),
-    Player(name: "Liam", history: [145, 198, 167, 203, 188, 188]),
-    Player(name: "Olivia", history: [175, 155, 185, 195, 160, 175]),
-    Player(name: "Sophia", history: [142, 178, 156, 189, 171, 162]),
-    Player(name: "Jackson", history: [168, 145, 172, 183, 149, 150]),
-    Player(name: "Ava", history: [155, 138, 165, 178, 143, 144]),
-    Player(name: "Lucas", history: [149, 132, 158, 171, 136, 145]),
-    Player(name: "Mia", history: [143, 127, 151, 164, 129, 142]),
-    Player(name: "Ethan", history: [138, 122, 146, 159, 124, 145]),
+    Player("Emma", history: [180, 165, 190, 21012, 522, 2302]),
+    Player("Liam", history: [145, 198, 167, 203, 188, 188]),
+    Player("Olivia", history: [175, 155, 185, 195, 160, 175]),
+    Player("Sophia", history: [142, 178, 156, 189, 171, 162]),
+    Player("Jackson", history: [168, 145, 172, 183, 149, 150]),
+    Player("Ava", history: [155, 138, 165, 178, 143, 144]),
+    Player("Lucas", history: [149, 132, 158, 171, 136, 145]),
+    Player("Mia", history: [143, 127, 151, 164, 129, 142]),
+    Player("Ethan", history: [138, 122, 146, 159, 124, 145]),
 ]
 
 let backgroundColor = Color(red: 0.2, green: 0.3, blue: 0.5)      // Deep Blue
