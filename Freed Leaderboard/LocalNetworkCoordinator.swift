@@ -7,11 +7,12 @@
 //  Edited by Isaac D2 on 1/2/26.
 //
  
- import Foundation
- import MultipeerConnectivity
+import Foundation
+import MultipeerConnectivity
+import SwiftUI
  
- @Observable
- class LocalNetworkSessionCoordinator: NSObject {
+@Observable
+class LocalNetworkSessionCoordinator: NSObject {
     private let advertiser: MCNearbyServiceAdvertiser
     private let browser: MCNearbyServiceBrowser
     private let session: MCSession
@@ -54,7 +55,7 @@
         browser.startBrowsingForPeers()
     }
     
-    public func stopBrowing() {
+    public func stopBrowsing() {
         browser.stopBrowsingForPeers()
     }
     
@@ -80,6 +81,19 @@
             with: .reliable
         )
     }
+     
+     public func sendData(peerID: MCPeerID, message: Data) throws {
+         try session.send(
+            message,
+            toPeers: [peerID],
+            // .reliable = TCP
+            // .unreliable = UDP
+            // Remember that we have added two set of configuration on the Info.plist
+            // file at the time of configuration. We want guranteed message delivery
+            // so we choose TCP/.reliable.
+            with: .reliable
+         )
+     }
 }
                                                                              
 extension LocalNetworkSessionCoordinator: MCNearbyServiceAdvertiserDelegate {

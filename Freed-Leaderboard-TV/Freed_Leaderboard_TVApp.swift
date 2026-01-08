@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct Freed_Leaderboard_TVApp: App {
+    @State private var leaderboardData = LeaderboardData()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
+        .environment(leaderboardData)
     }
 }

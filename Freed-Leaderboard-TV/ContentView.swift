@@ -18,109 +18,6 @@ let pillBackground = Color(red: 0.95, green: 0.95, blue: 0.98)   // Off-White
 let dividerColor = accentColors         // Sunny Orange
 let textColor = backgroundColor
 
-class Player: Codable, Identifiable {
-    var id: UUID
-    var name: String
-    private var history: [Int]
-    
-    init(name: String, history: [Int] = []) {
-        self.id = UUID()
-        self.name = name
-        self.history = history
-    }
-    
-    func addScore(score: Int) {
-        history.append(score)
-    }
-    
-    func removeLastScore() {
-        _ = history.popLast()
-    }
-    
-    func getScore() -> Int {
-        history.reduce(0, +)
-    }
-    
-    func getLast3Turns() -> [Int] {
-        Array(history.suffix(3))
-    }
-}
-
-class LeaderboardData: Codable {
-    private(set) var players: [Player]
-    private(set) var runningTotal: Int
-    private var currentPlayerIndex: Int
-    private var round: Int
-
-    init(players: [Player] = [], runningTotal: Int = 0) {
-        self.players = players
-        self.runningTotal = runningTotal
-        self.currentPlayerIndex = 0
-        self.round = 1
-    }
-    
-    func addPlayer(newPlayer: Player) {
-        players.append(newPlayer)
-    }
-    func removePlayer(id: UUID) {
-        players.removeAll {$0.id == id }
-    }
-    
-    func clearRunningTotal() {
-        runningTotal = 0
-    }
-    
-    func nextPlayer() {
-        guard !players.isEmpty else { return }
-        currentPlayerIndex += 1
-        if currentPlayerIndex >= players.count {
-            currentPlayerIndex = 0
-            round += 1
-        }
-    }
-    
-    func backPlayer() {
-        guard !players.isEmpty else { return }
-        if currentPlayerIndex == 0 {
-            if round > 1 {
-                round -= 1
-            }
-            currentPlayerIndex = players.count - 1
-        } else {
-            currentPlayerIndex -= 1
-        }
-    }
-    
-    func getCurrentPlayer() -> Player? {
-        guard !players.isEmpty else { return nil }
-        return players[currentPlayerIndex]
-    }
-    
-    func getNextPlayer() -> Player? {
-        guard !players.isEmpty else { return nil }
-        let nextIndex = (currentPlayerIndex + 1) % players.count
-        return players[nextIndex]
-    }
-    
-    func getPreviousPlayer() -> Player? {
-        guard !players.isEmpty else { return nil }
-        let prevIndex = currentPlayerIndex == 0 ? players.count - 1 : currentPlayerIndex - 1
-        return players[prevIndex]
-    }
-    
-    func getLeaderboard() -> [Player] {
-        players.sorted { lhs, rhs in
-            lhs.getScore() > rhs.getScore()
-        }
-    }
-    
-    func addPlayerScore(id: UUID, score: Int) {
-        if let index = players.firstIndex(where: { $0.id == id }) {
-            players[index].addScore(score: score)
-        }
-    }
-}
-
 struct LeaderboardPlayerPill: View {
     let place: Int
     let name: String
@@ -240,11 +137,13 @@ struct CurrentPlayerStats: View {
 }
 
 struct ContentView: View {
+    @Environment(LeaderboardData.self) private var leaderboardData
     @State private var message: String = ""
     @State private var localNetwork = LocalNetworkSessionCoordinator()
     @State private var showAlert = true
     @State private var alertText = ""
     @State private var leaderboard = LeaderboardData(players: samplePlayers)
+    @State private var decodedData : LeaderboardData?
     
     var body: some View {
         GeometryReader { geometry in
@@ -260,7 +159,7 @@ struct ContentView: View {
                         .background(backgroundColor)
                     
                     ScrollView(showsIndicators: true) {
-                        LeaderboardGrid(players: leaderboard.getLeaderboard())
+                        LeaderboardGrid(players: leaderboardData.getLeaderboard())
                             .frame(width: geometry.size.width * 2/3)
                     }
                     .background(backgroundColor)
@@ -274,11 +173,11 @@ struct ContentView: View {
                 
                 // Column 2 - Current Player
                 VStack(spacing: 20) {
-                    CurrentPlayerStats(player: leaderboard.getCurrentPlayer())
+                    CurrentPlayerStats(player: leaderboardData.getCurrentPlayer())
                     
                     Spacer()
                     
-                    Text("Running Total: \(leaderboard.runningTotal)")
+                    Text("Running Total: \(leaderboardData.runningTotal)")
                         .font(.title3)
                         .bold()
                         .frame(maxWidth: .infinity)
@@ -287,7 +186,7 @@ struct ContentView: View {
                         .foregroundColor(textColor)
                         .clipShape(Capsule())
                     
-                    if let nextPlayer = leaderboard.getNextPlayer() {
+                    if let nextPlayer = leaderboardData.getNextPlayer() {
                         VStack(spacing: 10) {
                             Text("Next up:")
                                 .font(.headline)
@@ -312,18 +211,32 @@ struct ContentView: View {
             .frame(maxHeight: .infinity, alignment: .top)
         }
         .ignoresSafeArea()
-        .onChange(of: localNetwork.message) { _, newValue in
-            message = newValue
+        .onChange(of: localNetwork.leaderboardData) { _, newValue in
+            print("RECEIVED")
+            let data = newValue
+            do {
+                decodedData = try JSONDecoder().decode(LeaderboardData.self, from: data)
+                if let decodedData {
+                    @Bindable var leaderboardData = leaderboardData
+                    leaderboardData.players = decodedData.players
+                }
+            } catch {
+                print("Error")
+                print(error)
+            }
         }
         .onAppear {
             localNetwork.startAdvertising()
+            localNetwork.startBrowsing()
         }
         .onDisappear {
             localNetwork.stopAdvertising()
+            localNetwork.stopBrowsing()
         }
     }
 }
 
 #Preview {
     ContentView()
+        .environment(LeaderboardData())
 }
