@@ -8,7 +8,7 @@ struct PlayerEditor: View {
     @Environment(LeaderboardData.self) private var leaderboardData
     @Environment(\.dismiss) private var dismiss
 
-    @State private var playerCopy = Player()
+    @State private var playerCopy = Player("")
     @State private var isEditing = false
 
     private var isPlayerDeleted: Bool {
@@ -30,7 +30,7 @@ struct PlayerEditor: View {
                     ToolbarItem {
                         Button {
                             if isNew {
-                                leaderboardData.add(playerCopy)
+                                leaderboardData.addPlayer(newPlayer: playerCopy)
                                 dismiss()
                             } else {
                                 if isEditing && !isDeleted {
@@ -56,7 +56,7 @@ struct PlayerEditor: View {
                 Button(role: .destructive, action: {
                     isDeleted = true
                     dismiss()
-                    leaderboardData.delete(player)
+                    leaderboardData.removePlayer(id: player.id)
                 }, label: {
                     Label("Delete Event", systemImage: "trash.circle.fill")
                     .font(.title2)
@@ -76,5 +76,5 @@ struct PlayerEditor: View {
 }
 
 #Preview {
-    PlayerEditor(player: .constant(Player()))
+    PlayerEditor(player: .constant(Player("")))
 }

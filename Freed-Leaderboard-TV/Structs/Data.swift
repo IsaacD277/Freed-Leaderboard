@@ -4,8 +4,8 @@ import SwiftUI
 @Observable class LeaderboardData: Codable {
     var players: [Player]
     var runningTotal: Int
-    var currentPlayerIndex: Int?
-    var round: Int?
+    var currentPlayerIndex: Int
+    var round: Int
     
     init(players: [Player] = [], runningTotal: Int = 0) {
         self.players = players

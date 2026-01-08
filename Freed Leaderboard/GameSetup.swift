@@ -5,7 +5,7 @@ struct GameSetup: View {
     @Environment(LeaderboardData.self) private var leaderboardData
     @State private var isAddingNewPlayer = false
     @State private var isConnectingToDevice = false
-    @State private var newPlayer = Player()
+    @State private var newPlayer = Player("")
     @State private var peerID: MCPeerID? = nil
     @Binding var localNetwork: LocalNetworkSessionCoordinator
 
@@ -19,7 +19,7 @@ struct GameSetup: View {
         .toolbar {
             ToolbarItem {
                 Button {
-                    newPlayer = Player()
+                    newPlayer = Player("")
                     isAddingNewPlayer = true
                 } label: {
                     Image(systemName: "plus")

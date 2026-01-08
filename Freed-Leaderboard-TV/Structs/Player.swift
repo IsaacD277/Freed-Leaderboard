@@ -18,11 +18,11 @@ struct Player: Codable, Identifiable {
         self.history = history
     }
 
-    func addScore(score: Int) {
+    mutating func addScore(score: Int) {
         history.append(score)
     }
     
-    func removeLastScore() {
+    mutating func removeLastScore() {
         _ = history.popLast()
     }
     
