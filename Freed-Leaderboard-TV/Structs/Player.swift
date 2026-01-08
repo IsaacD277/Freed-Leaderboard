@@ -10,19 +10,32 @@ import Foundation
 struct Player: Codable, Identifiable {
     var id: UUID
     var name: String
-    var score: Int
     var history: [Int]
     
-    init(_ name: String = "", score: Int = 0, history: [Int] = []) {
-        self.id = UUID.init()
+    init(_ name: String, history: [Int] = []) {
+        self.id = UUID()
         self.name = name
-        self.score = score
         self.history = history
+    }
+
+    func addScore(score: Int) {
+        history.append(score)
+    }
+    
+    func removeLastScore() {
+        _ = history.popLast()
+    }
+    
+    func getScore() -> Int {
+        history.reduce(0, +)
+    }
+    
+    func getLast3Turns() -> [Int] {
+        Array(history.suffix(3))
     }
 
     static var example = Player(
         "John",
-        score: 3000,
         history: [0, 800, 600, 0, 1500]
     )
 }
