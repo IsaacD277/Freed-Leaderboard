@@ -34,8 +34,10 @@ struct ContentView: View {
                     } label: {
                         if localNetwork.connectedDevices.count == 0 {
                             Image(systemName: "tv.badge.wifi")
+                                .foregroundStyle(Color.background)
                         } else {
                             Image(systemName: "tv.badge.wifi.fill")
+                                .foregroundStyle(Color.background)
                         }
                     }
                 }
@@ -43,7 +45,8 @@ struct ContentView: View {
                     Button {
                         isSettingUpPlayers = true
                     } label: {
-                        Image(systemName: "person")
+                        Image(systemName: "person.3")
+                            .foregroundStyle(Color.background)
                     }
                 }
             }

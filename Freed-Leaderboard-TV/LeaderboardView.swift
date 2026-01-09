@@ -64,9 +64,7 @@ struct LeaderboardView: View {
                                 .bold()
                                 .frame(maxWidth: .infinity)
                                 .padding(20)
-                                .background(Color.pill)
-                                .foregroundColor(Color.background)
-                                .clipShape(Capsule())
+                                .foregroundStyle(Color.accent)
                         }
                     }
                 }
@@ -93,14 +91,6 @@ struct LeaderboardView: View {
                 print("Error")
                 print(error)
             }
-        }
-        .onAppear {
-            localNetwork.startAdvertising()
-            localNetwork.startBrowsing()
-        }
-        .onDisappear {
-            localNetwork.stopAdvertising()
-            localNetwork.stopBrowsing()
         }
     }
 }

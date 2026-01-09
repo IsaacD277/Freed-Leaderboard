@@ -24,13 +24,18 @@ struct ContentView: View {
                     .frame(maxHeight: .infinity, alignment: .top)
                     .padding(20)
                     .background(Color.background)
+                    .onAppear {
+                        localNetwork.startAdvertising()
+                        print("Started Advertising")
+                    }
                 } else {
                     LeaderboardView()
+                        .onAppear {
+                            localNetwork.stopAdvertising()
+                            print("Stopped Advertising")
+                        }
                 }
             }
-        }
-        .onAppear {
-            localNetwork.startAdvertising()
         }
     }
 }

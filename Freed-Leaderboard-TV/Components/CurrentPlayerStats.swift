@@ -9,10 +9,7 @@ import Foundation
 import SwiftUI
 
 struct CurrentPlayerStats: View {
-//    @Environment(LeaderboardData.self) private var leaderboardData
-//    @State private var localNetwork = LocalNetworkSessionCoordinator()
     let player: Player?
-//    @State private var decodedData : LeaderboardData?
     
     var body: some View {
         Group {
@@ -23,9 +20,7 @@ struct CurrentPlayerStats: View {
                         .bold()
                         .frame(maxWidth: .infinity)
                         .padding(20)
-                        .background(Color.pill)
-                        .foregroundColor(Color.background)
-                        .clipShape(Capsule())
+                        .foregroundStyle(.accent)
                     
                     Text("Score: \(player!.getScore())")
                         .font(.title3)
@@ -63,21 +58,9 @@ struct CurrentPlayerStats: View {
                     .clipShape(Capsule())
             }
         }
-//        .onChange(of: localNetwork.leaderboardData) { _, newValue in
-//            let data = newValue
-//            do {
-//                decodedData = try JSONDecoder().decode(LeaderboardData.self, from: data)
-//                if let decodedData {
-//                    player = leaderboardData.getPlayerByIndex(decodedData.currentPlayerIndex)
-//                }
-//            } catch {
-//                print("Error")
-//                print(error)
-//            }
-//        }
     }
 }
 
-//#Preview {
-//    CurrentPlayerStats(leaderboardData: LeaderboardData(players: Player.samplePlayers))
-//}
+#Preview {
+    CurrentPlayerStats(player: Player.example)
+}
