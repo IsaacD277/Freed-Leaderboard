@@ -14,11 +14,16 @@ struct ContentView: View {
                             .font(.title)
                             .fontWeight(.heavy)
                             .foregroundStyle(.accent)
-                        Spacer()
                         Text("Family Reunion 2026 Edition")
                             .foregroundStyle(.accent)
+                            .font(.subheadline)
                             .fontWeight(.bold)
-                            .padding()
+                            
+                        Spacer()
+                        Text("Please connect an iPhone to control the leaderboard")
+                            .font(.footnote)
+                            .fontWeight(.light)
+                            .foregroundStyle(.accent)
                     }
                     .frame(maxWidth: .infinity)
                     .frame(maxHeight: .infinity, alignment: .top)
