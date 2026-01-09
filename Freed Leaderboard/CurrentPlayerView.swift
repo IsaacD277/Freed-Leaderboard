@@ -153,6 +153,7 @@ struct CurrentPlayerView: View {
         player = forward ? leaderboardData.getNextPlayer() ?? Player("") : leaderboardData.getPreviousPlayer() ?? Player("")
         forward ? leaderboardData.nextPlayer() : leaderboardData.backPlayer()
         try? localNetwork.broadcastData(leaderboardData)
+        leaderboardData.saveLocally()
     }
 }
 

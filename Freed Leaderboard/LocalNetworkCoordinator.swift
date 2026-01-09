@@ -23,7 +23,7 @@ import SwiftUI
     }
     
     private(set) var message: String = ""
-    private(set) var leaderboardData: Data = Data()
+    private(set) var leaderboardData: Data = Data(count: 0)
     
     init(peerID: MCPeerID = .init(displayName: UIDevice.current.name)) {
         advertiser = .init(
@@ -82,9 +82,12 @@ import SwiftUI
         )
     }
     
-    public func sendData(peerID: MCPeerID, message: Data) throws {
-        try session.send(
-            message,
+    public func sendData(peerID: MCPeerID, message: LeaderboardData) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let data = try? encoder.encode(message)
+        try? session.send(
+            data!,
             toPeers: [peerID],
             // .reliable = TCP
             // .unreliable = UDP
@@ -99,7 +102,6 @@ import SwiftUI
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         let data = try? encoder.encode(message)
-        
         try? session.send(
             data!,
             toPeers: Array(connectedDevices),
@@ -145,6 +147,7 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
     ) {
         if state == .connected {
             connectedDevices.insert(peerID)
+            print("Connected")
         } else {
             connectedDevices.remove(peerID)
         }

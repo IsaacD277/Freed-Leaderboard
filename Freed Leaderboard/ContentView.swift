@@ -24,7 +24,7 @@ struct ContentView: View {
                             isSettingUpPlayers = true
                         }
                 } else {
-                    CurrentPlayerView(player: leaderboardData.players.first ?? Player(""))
+                    CurrentPlayerView(player: leaderboardData.players[leaderboardData.currentPlayerIndex])
                 }
             }
             .toolbar {

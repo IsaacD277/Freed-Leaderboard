@@ -11,6 +11,7 @@ import MultipeerConnectivity
 struct ConnectionView: View {
     @Environment(LeaderboardData.self) private var leaderboardData
     @Environment(LocalNetworkSessionCoordinator.self) private var localNetwork
+    @State private var isConnected = false
 
     
     var body: some View {
@@ -23,6 +24,7 @@ struct ConnectionView: View {
                         }
                         .onTapGesture {
                             try? localNetwork.broadcastData(leaderboardData)
+                            leaderboardData.saveLocally()
                         }
                     }
                 } header: {
@@ -35,6 +37,10 @@ struct ConnectionView: View {
                             Spacer()
                             Button {
                                 localNetwork.invitePeer(peerID: peerID)
+//                                    .task(delaySend)
+                                isConnected.toggle()
+//                                try? await Task.sleep(nanoseconds: 1_000)
+//                                try? localNetwork.sendData(peerID: peerID, message: leaderboardData)
                             } label: {
                                 Image(systemName: "plus.circle")
                             }
@@ -49,7 +55,20 @@ struct ConnectionView: View {
         .onAppear {
             localNetwork.startBrowsing()
         }
+//        .onChange(of: isConnected) {
+//            Task {
+//                await delaySend()
+//            }
+//        }
     }
+    
+//    private func delaySend() async {
+//        print("Inside the delayed send")
+//        try? await Task.sleep(for: .milliseconds(100))
+//        print("after sleep")
+//        try? localNetwork.broadcastData(leaderboardData)
+//        print("After send")
+//    }
 }
 
 #Preview {

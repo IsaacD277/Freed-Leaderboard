@@ -24,6 +24,7 @@ struct PlayerSetupView: View {
                 leaderboardData.addPlayer(newPlayer: Player(playerName))
                 try? localNetwork.broadcastData(leaderboardData)
                 playerName = ""
+                leaderboardData.saveLocally()
             }
             .navigationTitle("Add Players")
             .toolbarTitleDisplayMode(.inlineLarge)
@@ -54,6 +55,7 @@ struct PlayerSetupView: View {
                     leaderboardData.runningTotal = 0
                     leaderboardData.round = 1
                     try? localNetwork.broadcastData(leaderboardData)
+                    leaderboardData.saveLocally()
                 }
                 Button("Cancel", role: .cancel) {
                     // Do nothing
@@ -65,11 +67,13 @@ struct PlayerSetupView: View {
     func deleteItems(at offsets: IndexSet) {
         leaderboardData.players.remove(atOffsets: offsets)
         try? localNetwork.broadcastData(leaderboardData)
+        leaderboardData.saveLocally()
     }
     
     func move(from source: IndexSet, to destination: Int) {
         leaderboardData.players.move(fromOffsets: source, toOffset: destination)
         try? localNetwork.broadcastData(leaderboardData)
+        leaderboardData.saveLocally()
     }
 }
 

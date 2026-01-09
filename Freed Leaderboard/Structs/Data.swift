@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-@Observable class LeaderboardData: Codable, Equatable {    
+@Observable class LeaderboardData: Codable, Equatable {
     var players: [Player]
     var runningTotal: Int
     var currentPlayerIndex: Int
@@ -79,6 +79,13 @@ import SwiftUI
     func getPlayerByIndex(_ index: Int) -> Player? {
         guard !players.isEmpty else { return nil }
         return players[index]
+    }
+    
+    func saveLocally() {
+        let encoder = JSONEncoder()
+        if let data = try? encoder.encode(self) {
+            UserDefaults.standard.set(data, forKey: "leaderboardData")
+        }
     }
     
     static func == (lhs: LeaderboardData, rhs: LeaderboardData) -> Bool {

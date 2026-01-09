@@ -28,9 +28,9 @@ struct ContentView: View {
                     LeaderboardView()
                 }
             }
-            .onAppear {
-                localNetwork.startAdvertising()
-            }
+        }
+        .onAppear {
+            localNetwork.startAdvertising()
         }
     }
 }
