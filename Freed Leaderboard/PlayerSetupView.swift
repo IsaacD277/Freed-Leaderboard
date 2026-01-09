@@ -4,7 +4,8 @@ import MultipeerConnectivity
 struct PlayerSetupView: View {
     @Environment(LeaderboardData.self) private var leaderboardData
     @Environment(LocalNetworkSessionCoordinator.self) private var localNetwork
-//    @State private var isAddingNewPlayer = false
+    
+    @State private var isResettingScores = false
     @State private var isConnectingToDevice = false
     @State private var newPlayer = Player("")
     @State private var playerName: String = ""
@@ -28,12 +29,34 @@ struct PlayerSetupView: View {
             .toolbarTitleDisplayMode(.inlineLarge)
             .toolbar {
                 ToolbarItem {
+                    Button {
+                        isResettingScores = true
+                    } label: {
+                        Image(systemName: "arrow.trianglehead.2.counterclockwise")
+                            .foregroundStyle(.red)
+                    }
+                }
+                ToolbarItem {
                     EditButton()
                 }
             }
             .sheet(isPresented: $isConnectingToDevice) {
                 NavigationView {
                     ConnectionView()
+                }
+            }
+            .confirmationDialog("Reset scores for all players?", isPresented: $isResettingScores) {
+                Button("Reset", role: .destructive) {
+                    for i in 0..<leaderboardData.players.count {
+                        leaderboardData.players[i].resetScore()
+                    }
+                    leaderboardData.currentPlayerIndex = 0
+                    leaderboardData.runningTotal = 0
+                    leaderboardData.round = 1
+                    try? localNetwork.broadcastData(leaderboardData)
+                }
+                Button("Cancel", role: .cancel) {
+                    // Do nothing
                 }
             }
         }
