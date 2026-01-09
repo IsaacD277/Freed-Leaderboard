@@ -6,11 +6,11 @@
 //  URL: https://medium.com/@input.split/step-by-step-guide-to-multipeer-connectivity-c66f6a688cd6
 //  Edited by Isaac D2 on 1/2/26.
 //
- 
+
 import Foundation
 import MultipeerConnectivity
 import SwiftUI
- 
+
 @Observable class LocalNetworkSessionCoordinator: NSObject {
     private let advertiser: MCNearbyServiceAdvertiser
     private let browser: MCNearbyServiceBrowser
@@ -23,7 +23,7 @@ import SwiftUI
     }
     
     private(set) var message: String = ""
-    
+    private(set) var leaderboardData: Data = Data()
     
     init(peerID: MCPeerID = .init(displayName: UIDevice.current.name)) {
         advertiser = .init(
@@ -68,9 +68,9 @@ import SwiftUI
         )
     }
     
-     public func sendHello(peerID: MCPeerID, message: String = "Hello, World.") throws {
-         let formattedMessage = message.data(using: .utf8)
-         try session.send(
+    public func sendHello(peerID: MCPeerID, message: String = "Hello, World.") throws {
+        let formattedMessage = message.data(using: .utf8)
+        try session.send(
             formattedMessage!,
             toPeers: [peerID],
             // .reliable = TCP
@@ -81,9 +81,9 @@ import SwiftUI
             with: .reliable
         )
     }
-     
-     public func sendData(peerID: MCPeerID, message: Data) throws {
-         try session.send(
+    
+    public func sendData(peerID: MCPeerID, message: Data) throws {
+        try session.send(
             message,
             toPeers: [peerID],
             // .reliable = TCP
@@ -92,8 +92,8 @@ import SwiftUI
             // file at the time of configuration. We want guranteed message delivery
             // so we choose TCP/.reliable.
             with: .reliable
-         )
-     }
+        )
+    }
     
     public func broadcastData(_ message: LeaderboardData) throws {
         let encoder = JSONEncoder()
@@ -107,7 +107,7 @@ import SwiftUI
         )
     }
 }
-                                                                             
+
 extension LocalNetworkSessionCoordinator: MCNearbyServiceAdvertiserDelegate {
     func advertiser(
         _ advertiser: MCNearbyServiceAdvertiser,
@@ -118,7 +118,7 @@ extension LocalNetworkSessionCoordinator: MCNearbyServiceAdvertiserDelegate {
         invitationHandler(true, session)
     }
 }
-                                                                             
+
 extension LocalNetworkSessionCoordinator: MCNearbyServiceBrowserDelegate {
     func browser(
         _ browser: MCNearbyServiceBrowser,
@@ -136,7 +136,7 @@ extension LocalNetworkSessionCoordinator: MCNearbyServiceBrowserDelegate {
     }
     
 }
-                                                                             
+
 extension LocalNetworkSessionCoordinator: MCSessionDelegate {
     func session(
         _ session: MCSession,
@@ -155,10 +155,7 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         didReceive data: Data,
         fromPeer peerID: MCPeerID,
     ) {
-        guard let text = String(data: data, encoding: .utf8) else {
-            return
-        }
-        message = "\(peerID.displayName) => \(text)"
+        leaderboardData = data
     }
     
     func session(
@@ -167,7 +164,6 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         withName streamName: String,
         fromPeer peerID: MCPeerID
     ) {
-        
     }
     
     func session(
@@ -176,7 +172,6 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         fromPeer peerID: MCPeerID,
         with progress: Progress
     ) {
-        
     }
     
     func session(
@@ -186,10 +181,10 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         at localURL: URL?,
         withError error: (any Error)?
     ) {
-        
     }
 }
-                                                                             
+
 private extension String {
     static let messageSendingService = "sendMessage"
 }
+

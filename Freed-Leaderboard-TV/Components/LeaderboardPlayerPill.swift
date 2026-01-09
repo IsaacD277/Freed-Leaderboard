@@ -38,8 +38,8 @@ struct LeaderboardPlayerPill: View {
         .frame(maxWidth: .infinity)
         .frame(height: 100)
         .padding(.horizontal, 20)
-        .background(pillBackground)
-        .foregroundColor(textColor)
+        .background(Color.pill)
+        .foregroundColor(Color.background)
         .clipShape(Capsule())
     }
 }

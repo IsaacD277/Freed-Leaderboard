@@ -72,7 +72,13 @@ import SwiftUI
     func addPlayerScore(id: UUID, score: Int) {
         if let index = players.firstIndex(where: { $0.id == id }) {
             players[index].addScore(score: score)
+            runningTotal = score
         }
+    }
+    
+    func getPlayerByIndex(_ index: Int) -> Player? {
+        guard !players.isEmpty else { return nil }
+        return players[index]
     }
     
     static func == (lhs: LeaderboardData, rhs: LeaderboardData) -> Bool {
