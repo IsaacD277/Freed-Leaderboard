@@ -23,7 +23,7 @@ import SwiftUI
     }
     
     private(set) var message: String = ""
-    
+    private(set) var leaderboardData: Data = Data()
     
     init(peerID: MCPeerID = .init(displayName: UIDevice.current.name)) {
         advertiser = .init(
@@ -155,10 +155,7 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         didReceive data: Data,
         fromPeer peerID: MCPeerID,
     ) {
-        guard let text = String(data: data, encoding: .utf8) else {
-            return
-        }
-        message = "\(peerID.displayName) => \(text)"
+        leaderboardData = data
     }
     
     func session(
@@ -167,7 +164,6 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         withName streamName: String,
         fromPeer peerID: MCPeerID
     ) {
-        
     }
     
     func session(
@@ -176,7 +172,6 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         fromPeer peerID: MCPeerID,
         with progress: Progress
     ) {
-        
     }
     
     func session(
@@ -186,10 +181,10 @@ extension LocalNetworkSessionCoordinator: MCSessionDelegate {
         at localURL: URL?,
         withError error: (any Error)?
     ) {
-        
     }
 }
 
 private extension String {
     static let messageSendingService = "sendMessage"
 }
+
