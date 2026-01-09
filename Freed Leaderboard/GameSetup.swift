@@ -3,11 +3,10 @@ import MultipeerConnectivity
 
 struct GameSetup: View {
     @Environment(LeaderboardData.self) private var leaderboardData
+    @Environment(LocalNetworkSessionCoordinator.self) private var localNetwork
     @State private var isAddingNewPlayer = false
     @State private var isConnectingToDevice = false
     @State private var newPlayer = Player("")
-    @State private var peerID: MCPeerID? = nil
-    @Binding var localNetwork: LocalNetworkSessionCoordinator
 
     var body: some View {
         List {
@@ -27,13 +26,7 @@ struct GameSetup: View {
             }
             ToolbarItem {
                 Button {
-                    print(localNetwork.connectedDevices)
-                    // Encodes the LeaderboardData to "Data" type and sends to the session
-                    let encoder = JSONEncoder()
-                    encoder.outputFormatting = .prettyPrinted
-                    let data = try? encoder.encode(leaderboardData)
-//                    print(String(data: data!, encoding: .utf8) ?? "Had to force unwrap")
-                    try? localNetwork.sendData(peerID: peerID!, message: data!)
+                    try? localNetwork.broadcastData(leaderboardData)
                 } label: {
                     Image(systemName: "paperplane.fill")
                 }
@@ -42,7 +35,7 @@ struct GameSetup: View {
                 Button {
                     isConnectingToDevice = true
                 } label: {
-                    if peerID == nil {
+                    if localNetwork.connectedDevices.count == 0 {
                         Image(systemName: "tv.badge.wifi")
                     } else {
                         Image(systemName: "tv.badge.wifi.fill")
@@ -57,7 +50,7 @@ struct GameSetup: View {
         }
         .sheet(isPresented: $isConnectingToDevice) {
             NavigationView {
-                ConnectionView(localNetwork: $localNetwork, peer: $peerID)
+                ConnectionView()
             }
         }
     }
@@ -66,4 +59,5 @@ struct GameSetup: View {
 #Preview {
     ContentView()
         .environment(LeaderboardData())
+        .environment(LocalNetworkSessionCoordinator())
 }

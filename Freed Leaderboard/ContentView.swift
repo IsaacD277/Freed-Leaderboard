@@ -9,15 +9,9 @@ import SwiftUI
 import MultipeerConnectivity
 
 struct ContentView: View {
-    @Environment(LeaderboardData.self) private var leaderboardData
-    @State private var message: String = ""
-    @State private var localNetwork: LocalNetworkSessionCoordinator = LocalNetworkSessionCoordinator()
-    @State private var showAlert = false
-    @State private var alertText = ""
-    
     var body: some View {
         NavigationStack {
-            GameSetup(localNetwork: $localNetwork)
+            GameSetup()
         }
     }
 }
@@ -25,4 +19,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environment(LeaderboardData())
+        .environment(LocalNetworkSessionCoordinator())
 }

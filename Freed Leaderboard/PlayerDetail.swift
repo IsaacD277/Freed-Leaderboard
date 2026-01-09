@@ -28,9 +28,6 @@ struct PlayerDetail: View {
 }
 
 
-
-struct EventDetail_Previews: PreviewProvider {
-    static var previews: some View {
-        PlayerDetail(player: .constant(Player.example), isEditing: true)
-    }
+#Preview {
+    PlayerDetail(player: .constant(Player.example), isEditing: true)
 }

@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-@Observable class LeaderboardData: Codable {
+@Observable class LeaderboardData: Codable, Equatable {
     var players: [Player]
     var runningTotal: Int
     var currentPlayerIndex: Int
@@ -73,5 +73,9 @@ import SwiftUI
         if let index = players.firstIndex(where: { $0.id == id }) {
             players[index].addScore(score: score)
         }
+    }
+    
+    static func == (lhs: LeaderboardData, rhs: LeaderboardData) -> Bool {
+        return lhs.players == rhs.players && lhs.currentPlayerIndex == rhs.currentPlayerIndex && lhs.round == rhs.round && lhs.runningTotal == rhs.runningTotal
     }
 }

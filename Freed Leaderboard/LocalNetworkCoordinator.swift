@@ -11,8 +11,7 @@ import Foundation
 import MultipeerConnectivity
 import SwiftUI
  
-@Observable
-class LocalNetworkSessionCoordinator: NSObject {
+@Observable class LocalNetworkSessionCoordinator: NSObject {
     private let advertiser: MCNearbyServiceAdvertiser
     private let browser: MCNearbyServiceBrowser
     private let session: MCSession
@@ -22,6 +21,7 @@ class LocalNetworkSessionCoordinator: NSObject {
     var otherDevices: Set<MCPeerID> {
         return allDevices.subtracting(connectedDevices)
     }
+    
     private(set) var message: String = ""
     
     
@@ -64,7 +64,7 @@ class LocalNetworkSessionCoordinator: NSObject {
             peerID,
             to: session,
             withContext: nil,
-            timeout: 120
+            timeout: 240
         )
     }
     
@@ -94,6 +94,18 @@ class LocalNetworkSessionCoordinator: NSObject {
             with: .reliable
          )
      }
+    
+    public func broadcastData(_ message: LeaderboardData) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let data = try? encoder.encode(message)
+        
+        try? session.send(
+            data!,
+            toPeers: Array(connectedDevices),
+            with: .reliable
+        )
+    }
 }
                                                                              
 extension LocalNetworkSessionCoordinator: MCNearbyServiceAdvertiserDelegate {

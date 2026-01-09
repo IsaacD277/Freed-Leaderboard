@@ -9,8 +9,8 @@ import SwiftUI
 import MultipeerConnectivity
 
 struct ConnectionView: View {
-    @Binding var localNetwork: LocalNetworkSessionCoordinator
-    @Binding var peer: MCPeerID?
+    @Environment(LeaderboardData.self) private var leaderboardData
+    @Environment(LocalNetworkSessionCoordinator.self) private var localNetwork
 
     
     var body: some View {
@@ -32,8 +32,7 @@ struct ConnectionView: View {
                             Spacer()
                             Button {
                                 localNetwork.invitePeer(peerID: peerID)
-                                peer = peerID
-                                print(peer!.displayName)
+                                // try? localNetwork.broadcastData(leaderboardData)
                             } label: {
                                 Image(systemName: "plus.circle")
                             }
@@ -47,18 +46,12 @@ struct ConnectionView: View {
         }
         .onAppear {
             localNetwork.startBrowsing()
-            print("Browsing")
-            localNetwork.startAdvertising()
-            print("Advertising")
-        }
-        .onDisappear {
-//            localNetwork.stopBrowsing()
-//            print("Done browsing")
         }
     }
 }
 
 #Preview {
     ContentView()
-        .environment(LeaderboardData())
+        .environment(LeaderboardData(players: Player.samplePlayers))
+        .environment(LocalNetworkSessionCoordinator())
 }

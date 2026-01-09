@@ -6,6 +6,7 @@ struct PlayerEditor: View {
 
     @State private var isDeleted = false
     @Environment(LeaderboardData.self) private var leaderboardData
+    @Environment(LocalNetworkSessionCoordinator.self) private var localNetwork
     @Environment(\.dismiss) private var dismiss
 
     @State private var playerCopy = Player("")
@@ -31,6 +32,7 @@ struct PlayerEditor: View {
                         Button {
                             if isNew {
                                 leaderboardData.addPlayer(newPlayer: playerCopy)
+                                try? localNetwork.broadcastData(leaderboardData)
                                 dismiss()
                             } else {
                                 if isEditing && !isDeleted {
@@ -77,4 +79,6 @@ struct PlayerEditor: View {
 
 #Preview {
     PlayerEditor(player: .constant(Player("")))
+        .environment(LeaderboardData(players: Player.samplePlayers))
+        .environment(LocalNetworkSessionCoordinator())
 }
