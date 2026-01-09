@@ -26,6 +26,10 @@ struct Player: Codable, Identifiable, Equatable {
         _ = history.popLast()
     }
     
+    mutating func resetScore() {
+        history = []
+    }
+    
     func getScore() -> Int {
         history.reduce(0, +)
     }

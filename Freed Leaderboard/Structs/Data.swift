@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-@Observable class LeaderboardData: Codable, Equatable {    
+@Observable class LeaderboardData: Codable, Equatable {
     var players: [Player]
     var runningTotal: Int
     var currentPlayerIndex: Int
@@ -72,6 +72,19 @@ import SwiftUI
     func addPlayerScore(id: UUID, score: Int) {
         if let index = players.firstIndex(where: { $0.id == id }) {
             players[index].addScore(score: score)
+            runningTotal = score
+        }
+    }
+    
+    func getPlayerByIndex(_ index: Int) -> Player? {
+        guard !players.isEmpty else { return nil }
+        return players[index]
+    }
+    
+    func saveLocally() {
+        let encoder = JSONEncoder()
+        if let data = try? encoder.encode(self) {
+            UserDefaults.standard.set(data, forKey: "leaderboardData")
         }
     }
     

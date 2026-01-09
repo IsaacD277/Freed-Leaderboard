@@ -11,9 +11,25 @@
 		6B1316172F0876670062FCD4 /* Freed-Leaderboard-TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Freed-Leaderboard-TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6B26BD8A2F1146B50034503D /* Exceptions for "Freed Leaderboard" folder in "Freed-Leaderboard-TV" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				LocalNetworkCoordinator.swift,
+				Structs/Data.swift,
+				Structs/Player.swift,
+			);
+			target = 6B1316162F0876670062FCD4 /* Freed-Leaderboard-TV */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6B1315F02F0855CA0062FCD4 /* Freed Leaderboard */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6B26BD8A2F1146B50034503D /* Exceptions for "Freed Leaderboard" folder in "Freed-Leaderboard-TV" target */,
+			);
 			path = "Freed Leaderboard";
 			sourceTree = "<group>";
 		};
@@ -310,6 +326,8 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Freed-Leaderboard-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Freed;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.family-games";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This is to update the values on the leaderboard";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -357,6 +375,8 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Freed-Leaderboard-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Freed;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.family-games";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This is to update the values on the leaderboard";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -400,6 +420,8 @@
 				DEVELOPMENT_TEAM = L65QKDD477;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Freed;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.family-games";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -431,6 +453,8 @@
 				DEVELOPMENT_TEAM = L65QKDD477;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Freed;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.family-games";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
 				LD_RUNPATH_SEARCH_PATHS = (

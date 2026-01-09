@@ -21,6 +21,10 @@ struct ConnectionView: View {
                         HStack {
                             Text(peerID.displayName)
                         }
+                        .onTapGesture {
+                            try? localNetwork.broadcastData(leaderboardData)
+                            leaderboardData.saveLocally()
+                        }
                     }
                 } header: {
                     Text("Connected")
@@ -32,7 +36,6 @@ struct ConnectionView: View {
                             Spacer()
                             Button {
                                 localNetwork.invitePeer(peerID: peerID)
-                                // try? localNetwork.broadcastData(leaderboardData)
                             } label: {
                                 Image(systemName: "plus.circle")
                             }
