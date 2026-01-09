@@ -46,9 +46,15 @@ import SwiftUI
         }
     }
     
-    func getCurrentPlayer() -> Player? {
-        guard !players.isEmpty else { return nil }
-        return players[currentPlayerIndex]
+    func getCurrentPlayer() -> Player {
+        let player: Player
+        if currentPlayerIndex >= 0 && currentPlayerIndex < players.count {
+            player = players[currentPlayerIndex]
+        } else {
+            player = Player("")
+            currentPlayerIndex = 0
+        }
+        return player
     }
     
     func getNextPlayer() -> Player? {
