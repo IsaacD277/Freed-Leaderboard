@@ -10,11 +10,13 @@ import SwiftUI
 @main
 struct Freed_Leaderboard_TVApp: App {
     @State private var leaderboardData = LeaderboardData()
+    @State private var localNetwork = LocalNetworkSessionCoordinator()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
         .environment(leaderboardData)
+        .environment(localNetwork)
     }
 }

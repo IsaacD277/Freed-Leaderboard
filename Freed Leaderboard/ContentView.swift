@@ -10,19 +10,62 @@ import MultipeerConnectivity
 
 struct ContentView: View {
     @Environment(LeaderboardData.self) private var leaderboardData
-    @State private var message: String = ""
-    @State private var localNetwork: LocalNetworkSessionCoordinator = LocalNetworkSessionCoordinator()
-    @State private var showAlert = false
-    @State private var alertText = ""
+    @Environment(LocalNetworkSessionCoordinator.self) private var localNetwork
+    
+    @State private var isConnectingToDevice: Bool = false
+    @State private var isSettingUpPlayers: Bool = false
     
     var body: some View {
         NavigationStack {
-            GameSetup(localNetwork: $localNetwork)
+            VStack {
+                if leaderboardData.players.isEmpty {
+                    EmptyView()
+                        .onTapGesture {
+                            isSettingUpPlayers = true
+                        }
+                } else {
+                    CurrentPlayerView(player: leaderboardData.getCurrentPlayer())
+                }
+            }
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        isConnectingToDevice = true
+                    } label: {
+                        if localNetwork.connectedDevices.count == 0 {
+                            Image(systemName: "tv.badge.wifi")
+                                .foregroundStyle(Color.background)
+                        } else {
+                            Image(systemName: "tv.badge.wifi.fill")
+                                .foregroundStyle(Color.background)
+                        }
+                    }
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        isSettingUpPlayers = true
+                    } label: {
+                        Image(systemName: "person.3")
+                            .foregroundStyle(Color.background)
+                    }
+                }
+            }
+            .sheet(isPresented: $isConnectingToDevice) {
+                NavigationView {
+                    ConnectionView()
+                }
+            }
+            .sheet(isPresented: $isSettingUpPlayers) {
+                NavigationView {
+                    PlayerSetupView()
+                }
+            }
         }
     }
 }
 
 #Preview {
     ContentView()
-        .environment(LeaderboardData())
+        .environment(LeaderboardData(players: Player.samplePlayers))
+        .environment(LocalNetworkSessionCoordinator())
 }

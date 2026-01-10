@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-@Observable class LeaderboardData: Codable {
+@Observable class LeaderboardData: Codable, Equatable {
     var players: [Player]
     var runningTotal: Int
     var currentPlayerIndex: Int
@@ -46,9 +46,15 @@ import SwiftUI
         }
     }
     
-    func getCurrentPlayer() -> Player? {
-        guard !players.isEmpty else { return nil }
-        return players[currentPlayerIndex]
+    func getCurrentPlayer() -> Player {
+        let player: Player
+        if currentPlayerIndex >= 0 && currentPlayerIndex < players.count {
+            player = players[currentPlayerIndex]
+        } else {
+            player = Player("")
+            currentPlayerIndex = 0
+        }
+        return player
     }
     
     func getNextPlayer() -> Player? {
@@ -72,6 +78,23 @@ import SwiftUI
     func addPlayerScore(id: UUID, score: Int) {
         if let index = players.firstIndex(where: { $0.id == id }) {
             players[index].addScore(score: score)
+            runningTotal = score
         }
+    }
+    
+    func getPlayerByIndex(_ index: Int) -> Player? {
+        guard !players.isEmpty else { return nil }
+        return players[index]
+    }
+    
+    func saveLocally() {
+        let encoder = JSONEncoder()
+        if let data = try? encoder.encode(self) {
+            UserDefaults.standard.set(data, forKey: "leaderboardData")
+        }
+    }
+    
+    static func == (lhs: LeaderboardData, rhs: LeaderboardData) -> Bool {
+        return lhs.players == rhs.players && lhs.currentPlayerIndex == rhs.currentPlayerIndex && lhs.round == rhs.round && lhs.runningTotal == rhs.runningTotal
     }
 }
