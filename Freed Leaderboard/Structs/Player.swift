@@ -22,8 +22,9 @@ struct Player: Codable, Identifiable, Equatable {
         history.append(score)
     }
     
-    mutating func removeLastScore() {
-        _ = history.popLast()
+    mutating func popLastScore() -> Int? {
+        let lastScore = history.popLast()
+        return lastScore
     }
     
     mutating func resetScore() {

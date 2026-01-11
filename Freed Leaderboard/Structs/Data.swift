@@ -25,17 +25,20 @@ import SwiftUI
         runningTotal = 0
     }
     
-    func nextPlayer() {
-        guard !players.isEmpty else { return }
+    func nextPlayer() -> Player? {
+        guard !players.isEmpty else { return nil }
         currentPlayerIndex += 1
         if currentPlayerIndex >= players.count {
             currentPlayerIndex = 0
             round += 1
         }
+        return players[currentPlayerIndex]
     }
     
-    func backPlayer() {
-        guard !players.isEmpty else { return }
+    
+    // pops the previous players last score and returns the (player, value)
+    func backPlayer() -> (Player?, Int?) {
+        guard !players.isEmpty else { return (nil, nil) }
         if currentPlayerIndex == 0 {
             if round > 1 {
                 round -= 1
@@ -44,6 +47,11 @@ import SwiftUI
         } else {
             currentPlayerIndex -= 1
         }
+        
+        let lastScore = players[currentPlayerIndex].popLastScore()
+        let previousPlayer = players[currentPlayerIndex]
+        
+        return (previousPlayer, lastScore)
     }
     
     func getCurrentPlayer() -> Player {
@@ -80,6 +88,14 @@ import SwiftUI
             players[index].addScore(score: score)
             runningTotal = score
         }
+    }
+    
+    func popPlayerLastScore(id: UUID) -> Int? {
+        if let index = players.firstIndex(where: { $0.id == id }) {
+            let lastScore = players[index].popLastScore()
+            return lastScore 
+        }
+        return nil
     }
     
     func getPlayerByIndex(_ index: Int) -> Player? {

@@ -39,19 +39,19 @@ struct CurrentPlayerView: View {
                 Spacer()
                 
                 HStack(spacing: 20) {
-                    QuickAddButton(amount: 50, action: handleScoreChange)
-                    QuickAddButton(amount: 100, action: handleScoreChange)
-                    QuickAddButton(amount: 200, action: handleScoreChange)
-                    QuickAddButton(amount: 300, action: handleScoreChange)
+                    QuickAddButton(amount: 50, action: handleCurrentRoundScoreChange)
+                    QuickAddButton(amount: 100, action: handleCurrentRoundScoreChange)
+                    QuickAddButton(amount: 200, action: handleCurrentRoundScoreChange)
+                    QuickAddButton(amount: 300, action: handleCurrentRoundScoreChange)
                 }
                 .padding(.horizontal, 20)
                 
                 HStack( spacing:20) {
                     
-                    QuickAddButton(amount: 400, action: handleScoreChange)
-                    QuickAddButton(amount: 500, action: handleScoreChange)
-                    QuickAddButton(amount: 600, action: handleScoreChange)
-                    QuickAddButton(amount: 750, action: handleScoreChange)
+                    QuickAddButton(amount: 400, action: handleCurrentRoundScoreChange)
+                    QuickAddButton(amount: 500, action: handleCurrentRoundScoreChange)
+                    QuickAddButton(amount: 600, action: handleCurrentRoundScoreChange)
+                    QuickAddButton(amount: 750, action: handleCurrentRoundScoreChange)
                 }
                 .padding(.horizontal, 20)
                 
@@ -81,7 +81,7 @@ struct CurrentPlayerView: View {
                     
                     VStack(spacing:5) {
                         Button("+") {
-                            handleScoreChange(amount: Int(customAdd) ?? 0);
+                            handleCurrentRoundScoreChange(amount: Int(customAdd) ?? 0);
                             customAdd = ""
                         }
                         .font(.system(size: 35))
@@ -92,7 +92,7 @@ struct CurrentPlayerView: View {
                         .clipShape(Capsule())
                         
                         Button("-") {
-                            handleScoreChange(amount: -(Int(customAdd) ?? 0));
+                            handleCurrentRoundScoreChange(amount: -(Int(customAdd) ?? 0));
                             customAdd = ""
                         }
                         .font(.system(size: 35))
@@ -115,7 +115,7 @@ struct CurrentPlayerView: View {
                 
                 HStack() {
                     Button("Back") {
-                        switchPlayers(forward: false)
+                        handleBackPlayer()
                     }
                     .padding(20)
                     .background(Color.pill)
@@ -125,7 +125,7 @@ struct CurrentPlayerView: View {
                     Spacer()
                     
                     Button("Next") {
-                        switchPlayers()
+                        handleNextPlayer()
                     }
                     .padding(20)
                     .background(Color.pill)
@@ -141,17 +141,36 @@ struct CurrentPlayerView: View {
         }
     }
     
-    func handleScoreChange(amount: Int) {
+    func handleCurrentRoundScoreChange(amount: Int) {
         currentRoundScore += amount
     }
     
-    func switchPlayers(forward: Bool = true) {
-        handleScoreChange(amount: Int(customAdd) ?? 0);
-        customAdd = ""
+    func handleBackPlayer() {
+        let (previousPlayer, lastScore) = leaderboardData.backPlayer()
+        
+        // Only update if we got valid data back
+        if let previousPlayer = previousPlayer {
+            player = previousPlayer
+            currentRoundScore = lastScore ?? 0
+        }
+        
+        updateTVData()
+    }
+    
+    func handleNextPlayer() {
         leaderboardData.addPlayerScore(id: player.id, score: currentRoundScore)
+        customAdd = ""
         currentRoundScore = 0
-        player = forward ? leaderboardData.getNextPlayer() ?? Player("") : leaderboardData.getPreviousPlayer() ?? Player("")
-        forward ? leaderboardData.nextPlayer() : leaderboardData.backPlayer()
+            
+        // Only update if there's a next player
+        if let nextPlayer = leaderboardData.nextPlayer() {
+            player = nextPlayer
+        }
+        
+        updateTVData()
+    }
+    
+    func updateTVData() {
         try? localNetwork.broadcastData(leaderboardData)
         leaderboardData.saveLocally()
     }
@@ -162,4 +181,6 @@ struct CurrentPlayerView: View {
     let leaderboardData = LeaderboardData(players: Player.samplePlayers)
     CurrentPlayerView(player: leaderboardData.players.first ?? Player.example)
         .environment(leaderboardData)
+        .environment(LocalNetworkSessionCoordinator())
 }
+
