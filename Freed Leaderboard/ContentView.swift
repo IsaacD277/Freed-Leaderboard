@@ -14,6 +14,7 @@ struct ContentView: View {
     
     @State private var isConnectingToDevice: Bool = false
     @State private var isSettingUpPlayers: Bool = false
+    @State private var isViewingLeaderboard : Bool = false
     
     var body: some View {
         NavigationStack {
@@ -24,10 +25,21 @@ struct ContentView: View {
                             isSettingUpPlayers = true
                         }
                 } else {
-                    CurrentPlayerView(player: leaderboardData.getCurrentPlayer())
+                    if (isViewingLeaderboard) {
+                        LeaderboardView()
+                    } else {
+                        CurrentPlayerView(player: leaderboardData.getCurrentPlayer())
+                    }
                 }
             }
             .toolbar {
+                ToolbarItem{
+                    Button {
+                        isViewingLeaderboard.toggle()
+                    } label: {
+                        isViewingLeaderboard ? Image(systemName: "dice"): Image(systemName: "list.number")
+                    }
+                }
                 ToolbarItem {
                     Button {
                         isConnectingToDevice = true
