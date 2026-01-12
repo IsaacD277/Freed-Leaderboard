@@ -114,13 +114,16 @@ struct CurrentPlayerView: View {
                 Spacer()
                 
                 HStack() {
-                    Button("Back") {
-                        handleBackPlayer()
+                    
+                    if (leaderboardData.round > 1 || leaderboardData.currentPlayerIndex > 0){
+                        Button("Back") {
+                            handleBackPlayer()
+                        }
+                        .padding(20)
+                        .background(Color.pill)
+                        .foregroundStyle(Color.background)
+                        .clipShape(Capsule())
                     }
-                    .padding(20)
-                    .background(Color.pill)
-                    .foregroundStyle(Color.background)
-                    .clipShape(Capsule())
                     
                     Spacer()
                     
