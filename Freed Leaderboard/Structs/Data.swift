@@ -42,8 +42,8 @@ import SwiftUI
         if currentPlayerIndex == 0 {
             if round > 1 {
                 round -= 1
+                currentPlayerIndex = players.count - 1
             }
-            currentPlayerIndex = players.count - 1
         } else {
             currentPlayerIndex -= 1
         }
