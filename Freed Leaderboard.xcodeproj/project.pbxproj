@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4FA25C452F1482E600BA9F1D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4FA25C442F1482E000BA9F1D /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		4FA25C442F1482E000BA9F1D /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		6B1315EE2F0855CA0062FCD4 /* Freed Leaderboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Freed Leaderboard.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B1316172F0876670062FCD4 /* Freed-Leaderboard-TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Freed-Leaderboard-TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -61,6 +66,7 @@
 		6B1315E52F0855CA0062FCD4 = {
 			isa = PBXGroup;
 			children = (
+				4FA25C442F1482E000BA9F1D /* .gitignore */,
 				6B1315F02F0855CA0062FCD4 /* Freed Leaderboard */,
 				6B1316182F0876670062FCD4 /* Freed-Leaderboard-TV */,
 				6B1315EF2F0855CA0062FCD4 /* Products */,
@@ -166,6 +172,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FA25C452F1482E600BA9F1D /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
