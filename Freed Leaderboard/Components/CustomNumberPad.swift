@@ -30,6 +30,20 @@ struct CustomNumberPad: View {
                     }
                 }
                 
+                
+                NumberButton(number: "C") {
+                    if value == "0" {
+                        roundValue = 0
+                    }
+                    value = "0"
+                }
+                
+                NumberButton(number: "0") {
+                    if value != "0" {
+                        value += "0"
+                    }
+                }
+
                 NumberButton(number: "⌫") {
                     if value.count > 1 {
                         value.removeLast()
@@ -38,20 +52,20 @@ struct CustomNumberPad: View {
                     }
                 }
                 
-                NumberButton(number: "0") {
-                    if value != "0" {
-                        value += "0"
-                    }
-                }
-                
-                NumberButton(number: "C") {
-                    if value == "0" {
-                        roundValue = 0
-                    }
-                    value = "0"
-                }
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal)
     }
+}
+
+
+#Preview {
+    struct PreviewWrapper: View {
+        @State private var value: String = "0"
+        @State private var roundValue: Int = 0
+        var body: some View {
+            CustomNumberPad(value: $value, roundValue: $roundValue)
+        }
+    }
+    return PreviewWrapper()
 }

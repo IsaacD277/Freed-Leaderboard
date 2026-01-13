@@ -12,6 +12,7 @@ struct LeaderboardPlayerPill: View {
     let place: Int
     let name: String
     let score: Int
+    let active: Bool
     
     var body: some View {
         HStack(spacing: 8) {
@@ -37,13 +38,23 @@ struct LeaderboardPlayerPill: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: 100)
-        .padding(.horizontal, 20)
-        .background(Color.pill)
+        .padding(.horizontal)
+        .background(active ? Color.accent:  Color.pill)
         .foregroundColor(Color.background)
         .clipShape(Capsule())
+        .overlay(
+            Capsule()
+                .strokeBorder(Color.accent, lineWidth: active ? 6 : 0)
+        )
+        .animation(.easeInOut(duration: 0.2), value: active)
+        
     }
 }
 
 #Preview {
-    LeaderboardPlayerPill(place: 1, name: "John", score: 5000)
+    VStack(spacing: 20) {
+        LeaderboardPlayerPill(place: 1, name: "John", score: 5000, active: false)
+        LeaderboardPlayerPill(place: 2, name: "Jane", score: 4500, active: true)
+    }
+    .padding()
 }

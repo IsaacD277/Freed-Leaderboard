@@ -3,13 +3,13 @@ import SwiftUI
 
 @Observable class LeaderboardData: Codable, Equatable {
     var players: [Player]
-    var runningTotal: Int
+    var roundScore: Int
     var currentPlayerIndex: Int
     var round: Int
     
-    init(players: [Player] = [], runningTotal: Int = 0) {
+    init(players: [Player] = []) {
         self.players = players
-        self.runningTotal = runningTotal
+        self.roundScore = 0
         self.currentPlayerIndex = 0
         self.round = 1
     }
@@ -21,8 +21,38 @@ import SwiftUI
         players.removeAll {$0.id == id }
     }
     
-    func clearRunningTotal() {
-        runningTotal = 0
+    func clearRoundScore() {
+        roundScore = 0
+    }
+    
+    func getPreviousScore() -> Int? {
+        return getPreviousPlayer()?.history.last
+    }
+    
+    func getPlayerPlace(id: UUID) -> Int? {
+        let leaderboard = getLeaderboard()
+        guard let index = leaderboard.firstIndex(where: { $0.id == id }) else {
+            return nil
+        }
+        return index + 1
+    }
+    
+    func getPlaceAhead (id: UUID) -> Player? {
+        guard let playerPlace = getPlayerPlace(id: id) else { return nil }
+        // Places are 1-based; the player ahead is at index (playerPlace - 2)
+        let leaderboard = getLeaderboard()
+        let aheadIndex = playerPlace - 2
+        guard aheadIndex >= 0 && aheadIndex < leaderboard.count else { return nil }
+        return leaderboard[aheadIndex]
+    }
+    
+    func getPlaceBehind (id: UUID) -> Player? {
+        guard let playerPlace = getPlayerPlace(id: id) else { return nil }
+        // Places are 1-based; the player behind is at index (playerPlace)
+        let leaderboard = getLeaderboard()
+        let behindIndex = playerPlace
+        guard behindIndex >= 0 && behindIndex < leaderboard.count else { return nil }
+        return leaderboard[behindIndex]
     }
     
     func nextPlayer() -> Player? {
@@ -73,6 +103,7 @@ import SwiftUI
     
     func getPreviousPlayer() -> Player? {
         guard !players.isEmpty else { return nil }
+        guard !(currentPlayerIndex == 0 && round == 1) else { return nil }
         let prevIndex = currentPlayerIndex == 0 ? players.count - 1 : currentPlayerIndex - 1
         return players[prevIndex]
     }
@@ -86,7 +117,6 @@ import SwiftUI
     func addPlayerScore(id: UUID, score: Int) {
         if let index = players.firstIndex(where: { $0.id == id }) {
             players[index].addScore(score: score)
-            runningTotal = score
         }
     }
     
@@ -110,7 +140,15 @@ import SwiftUI
         }
     }
     
+    func resetGame() {
+        self.players = []
+        self.roundScore = 0
+        self.currentPlayerIndex = 0
+        self.round = 1
+    }
+    
     static func == (lhs: LeaderboardData, rhs: LeaderboardData) -> Bool {
-        return lhs.players == rhs.players && lhs.currentPlayerIndex == rhs.currentPlayerIndex && lhs.round == rhs.round && lhs.runningTotal == rhs.runningTotal
+        return lhs.players == rhs.players && lhs.currentPlayerIndex == rhs.currentPlayerIndex && lhs.round == rhs.round && lhs.roundScore == rhs.roundScore
     }
 }
+

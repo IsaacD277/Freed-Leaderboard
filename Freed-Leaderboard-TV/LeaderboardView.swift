@@ -17,18 +17,19 @@ struct LeaderboardView: View {
             HStack(spacing: 0) {
                 // Column 1 - Leaderboard
                 VStack(spacing: 0) {
-                    Text("Freed Leaderboard")
+                    Text("Freed Leaderboard - Round \(leaderboardData.round)")
                         .frame(maxWidth: .infinity)
                         .font(.largeTitle)
                         .bold()
                         .foregroundColor(Color.accent)
-                        .padding(.vertical, 20)
+                        .padding(.vertical)
                         .background(Color.background)
                     
                     ScrollView(showsIndicators: true) {
                         LeaderboardGrid(players: leaderboardData.getLeaderboard())
                             .frame(width: geometry.size.width * 2/3)
                     }
+                    .padding(.horizontal)
                     .background(Color.background)
                 }
                 .background(Color.background)
@@ -38,40 +39,10 @@ struct LeaderboardView: View {
                     .fill(Color.accent)
                     .frame(width: 6)
                 
-                // Column 2 - Current Player
-                VStack(spacing: 20) {
-                    CurrentPlayerStats(player: leaderboardData.getCurrentPlayer())
-                    
-                    Spacer()
-                    
-                    Text("Running Total: \(leaderboardData.runningTotal)")
-                        .font(.title3)
-                        .bold()
-                        .frame(maxWidth: .infinity)
-                        .padding(20)
-                        .background(Color.pill)
-                        .foregroundColor(Color.background)
-                        .clipShape(Capsule())
-                    
-                    if let nextPlayer = leaderboardData.getNextPlayer() {
-                        VStack(spacing: 10) {
-                            Text("Next up:")
-                                .font(.headline)
-                                .foregroundColor(Color.accent)
-                            
-                            Text(nextPlayer.name)
-                                .font(.title3)
-                                .bold()
-                                .frame(maxWidth: .infinity)
-                                .padding(20)
-                                .foregroundStyle(Color.accent)
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .frame(maxHeight: .infinity, alignment: .top)
-                .padding(20)
-                .background(Color.background)
+                // Column 2
+                SidebarView()
+                    .padding(.vertical)
+                
             }
             .frame(maxHeight: .infinity, alignment: .top)
         }
@@ -83,7 +54,7 @@ struct LeaderboardView: View {
                 if let decodedData {
                     @Bindable var leaderboardData = leaderboardData
                     leaderboardData.players = decodedData.players
-                    leaderboardData.runningTotal = decodedData.runningTotal
+                    leaderboardData.roundScore = decodedData.roundScore
                     leaderboardData.round = decodedData.round
                     leaderboardData.currentPlayerIndex = decodedData.currentPlayerIndex
                 }
@@ -96,8 +67,8 @@ struct LeaderboardView: View {
 }
 
 #Preview {
-    ContentView()
-        .environment(LeaderboardData(players: Player.samplePlayers, runningTotal: 500))
+    LeaderboardView()
+        .environment(LeaderboardData(players: Player.samplePlayers))
         .environment(LocalNetworkSessionCoordinator())
 }
 

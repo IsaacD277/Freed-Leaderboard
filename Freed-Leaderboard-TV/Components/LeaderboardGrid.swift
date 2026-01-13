@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct LeaderboardGrid: View {
+    @Environment(LeaderboardData.self) private var leaderboardData
     let players: [Player]
     
     private var numberOfColumns: Int {
@@ -27,14 +28,16 @@ struct LeaderboardGrid: View {
                 LeaderboardPlayerPill(
                     place: index + 1,
                     name: player.name,
-                    score: player.getScore()
+                    score: player.getScore(),
+                    active: leaderboardData.getCurrentPlayer().id == player.id
                 )
             }
         }
-        .padding(20)
+        .padding()
     }
 }
 
 #Preview {
     LeaderboardGrid(players: Player.samplePlayers)
+        .environment(LeaderboardData(players: Player.samplePlayers))
 }
