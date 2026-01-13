@@ -19,13 +19,12 @@ struct CurrentPlayerStats: View {
                         .font(.title2)
                         .bold()
                         .frame(maxWidth: .infinity)
-                        .padding(20)
                         .foregroundStyle(.accent)
                     
-                    Text("Score: \(player!.getScore())")
+                    Text("Total: \(player!.getScore())")
                         .font(.title3)
                         .frame(maxWidth: .infinity)
-                        .padding(20)
+                        .padding()
                         .background(Color.pill)
                         .foregroundColor(Color.background)
                         .clipShape(Capsule())
@@ -33,7 +32,6 @@ struct CurrentPlayerStats: View {
                     Text("Previous 3 Turns:")
                         .font(.headline)
                         .foregroundColor(Color.accent)
-                        .padding(.top, 10)
                     
                     HStack(spacing: 15) {
                         ForEach(Array(player!.getLast3Turns()), id: \.self) { l in
@@ -41,7 +39,7 @@ struct CurrentPlayerStats: View {
                                 .font(.title3)
                                 .bold()
                                 .frame(maxWidth: .infinity)
-                                .padding(20)
+                                .padding(.vertical)
                                 .background(Color.pill)
                                 .foregroundColor(Color.background)
                                 .clipShape(Capsule())
@@ -52,7 +50,7 @@ struct CurrentPlayerStats: View {
                 Text("No Player")
                     .font(.title3)
                     .frame(maxWidth: .infinity)
-                    .padding(20)
+                    .padding()
                     .background(Color.pill)
                     .foregroundColor(Color.background)
                     .clipShape(Capsule())
