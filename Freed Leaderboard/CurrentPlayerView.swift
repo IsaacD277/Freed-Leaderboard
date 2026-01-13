@@ -176,11 +176,11 @@ struct CurrentPlayerView: View {
     func handleNextPlayer() {
         leaderboardData.addPlayerScore(id: player.id, score: leaderboardData.roundScore)
         customAdd = ""
-        leaderboardData.roundScore = 0
             
         // Only update if there's a next player
         if let nextPlayer = leaderboardData.nextPlayer() {
             player = nextPlayer
+            leaderboardData.roundScore = leaderboardData.getPlayerRoundScore(id: player.id) ?? 0
         }
         
         updateTVData()

@@ -66,7 +66,7 @@ import SwiftUI
     }
     
     
-    // pops the previous players last score and returns the (player, value)
+    // gets the previous players score for that round and returns the (player, value)
     func backPlayer() -> (Player?, Int?) {
         guard !players.isEmpty else { return (nil, nil) }
         if currentPlayerIndex == 0 {
@@ -78,7 +78,7 @@ import SwiftUI
             currentPlayerIndex -= 1
         }
         
-        let lastScore = players[currentPlayerIndex].popLastScore()
+        let lastScore = players[currentPlayerIndex].score(at: round-1)
         let previousPlayer = players[currentPlayerIndex]
         
         return (previousPlayer, lastScore)
@@ -114,9 +114,10 @@ import SwiftUI
         }
     }
     
-    func addPlayerScore(id: UUID, score: Int) {
+    func addPlayerScore(id: UUID, score: Int, round: Int? = nil) {
         if let index = players.firstIndex(where: { $0.id == id }) {
-            players[index].addScore(score: score)
+            let targetRound = round ?? self.round
+            players[index].addScore(score: score, at: targetRound - 1)
         }
     }
     
@@ -124,6 +125,21 @@ import SwiftUI
         if let index = players.firstIndex(where: { $0.id == id }) {
             let lastScore = players[index].popLastScore()
             return lastScore 
+        }
+        return nil
+    }
+    
+    func getPlayerRoundScore(id: UUID, round: Int? = nil) -> Int? {
+        if let index = players.firstIndex(where: { $0.id == id }) {
+            let targetRound = round ?? self.round
+            let player = players[index]
+            let targetIndex = targetRound - 1
+
+            guard targetIndex >= 0, targetIndex < player.history.count else {
+                return nil // or return 0 if you want a default
+            }
+
+            return player.history[targetIndex]
         }
         return nil
     }
