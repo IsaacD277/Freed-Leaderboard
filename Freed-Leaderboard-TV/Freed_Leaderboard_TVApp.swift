@@ -15,6 +15,12 @@ struct Freed_Leaderboard_TVApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+            .onAppear {
+                UIApplication.shared.isIdleTimerDisabled = true
+            }
+            .onDisappear {
+                UIApplication.shared.isIdleTimerDisabled = false
+            }
         }
         .environment(leaderboardData)
         .environment(localNetwork)
