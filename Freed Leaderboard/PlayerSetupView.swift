@@ -52,7 +52,7 @@ struct PlayerSetupView: View {
                         leaderboardData.players[i].resetScore()
                     }
                     leaderboardData.currentPlayerIndex = 0
-                    leaderboardData.runningTotal = 0
+                    leaderboardData.roundScore = 0
                     leaderboardData.round = 1
                     try? localNetwork.broadcastData(leaderboardData)
                     leaderboardData.saveLocally()

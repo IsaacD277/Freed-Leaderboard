@@ -27,7 +27,7 @@ struct ContentView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .frame(maxHeight: .infinity, alignment: .top)
-                    .padding(20)
+                    .padding()
                     .background(Color.background)
                     .onAppear {
                         localNetwork.startAdvertising()
@@ -47,6 +47,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .environment(LeaderboardData(players: Player.samplePlayers, runningTotal: 500))
+        .environment(LeaderboardData(players: Player.samplePlayers))
         .environment(LocalNetworkSessionCoordinator())
 }

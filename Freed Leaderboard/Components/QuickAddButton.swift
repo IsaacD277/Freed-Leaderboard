@@ -15,7 +15,7 @@ struct QuickAddButton: View {
         Button("\(amount > 0 ? "+" : "-")\(amount)") {
             action(amount)
         }
-        .padding(.vertical, 20)
+        .padding(.vertical)
         .frame(maxWidth: .infinity)
         .background(Color.pill)
         .foregroundStyle(Color.background)
@@ -24,4 +24,8 @@ struct QuickAddButton: View {
         
         
     }
+}
+
+#Preview {
+    QuickAddButton(amount: 100) { _ in }
 }

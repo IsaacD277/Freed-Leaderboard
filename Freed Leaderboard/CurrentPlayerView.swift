@@ -12,7 +12,6 @@ struct CurrentPlayerView: View {
     @Environment(LocalNetworkSessionCoordinator.self) private var localNetwork
     
     @State var player: Player
-    @State var currentRoundScore: Int = 0
     @State var customAdd: String = "0"
     @FocusState private var keyboardFocus: Bool
     
@@ -22,7 +21,7 @@ struct CurrentPlayerView: View {
                 Text("\(player.name) is up")
                     .font(.title)
                     .bold()
-                    .padding(.top, 20)
+                    .padding(.top)
                 
                 Spacer()
                 
@@ -32,9 +31,19 @@ struct CurrentPlayerView: View {
                 
                 Spacer()
                 
-                Text("\(currentRoundScore)")
-                    .font(.system(size: 60, weight: .bold, design: .rounded))
-                    .bold()
+                HStack(spacing: 20) {
+                    Text("\(leaderboardData.roundScore)")
+                        .font(.system(size: 60, weight: .bold, design: .rounded))
+                        .bold()
+                    
+                    
+                    
+                    if let previousPlayerScore = leaderboardData.getPreviousScore(), previousPlayerScore > 0, leaderboardData.roundScore == 0 {
+                        QuickAddButton(amount: previousPlayerScore, action: handleCurrentRoundScoreChange)
+                            .frame(width:100)
+                    }
+                    
+                }
                 
                 Spacer()
                 
@@ -44,7 +53,7 @@ struct CurrentPlayerView: View {
                     QuickAddButton(amount: 200, action: handleCurrentRoundScoreChange)
                     QuickAddButton(amount: 300, action: handleCurrentRoundScoreChange)
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal)
                 
                 HStack( spacing:20) {
                     
@@ -53,7 +62,7 @@ struct CurrentPlayerView: View {
                     QuickAddButton(amount: 600, action: handleCurrentRoundScoreChange)
                     QuickAddButton(amount: 750, action: handleCurrentRoundScoreChange)
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal)
                 
                 Spacer()
                 
@@ -61,7 +70,7 @@ struct CurrentPlayerView: View {
                     TextField("", text: $customAdd)
                         .onAppear { keyboardFocus = true }
                         .frame(maxHeight: .infinity)
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 45, weight: .bold, design: .rounded))
                         .background(Color.pill)
@@ -105,11 +114,14 @@ struct CurrentPlayerView: View {
                     .frame(maxHeight: .infinity)
                 }
                 .frame(height: 100)
-                .padding(.horizontal, 20)
+                .padding(.horizontal)
                 
                 Spacer()
                 
-                CustomNumberPad(value: $customAdd, roundValue: $currentRoundScore)
+                CustomNumberPad(
+                    value: $customAdd,
+                    roundValue: Binding(get: { leaderboardData.roundScore }, set: { leaderboardData.roundScore = $0 })
+                )
                 
                 Spacer()
                 
@@ -119,7 +131,7 @@ struct CurrentPlayerView: View {
                         Button("Back") {
                             handleBackPlayer()
                         }
-                        .padding(20)
+                        .padding()
                         .background(Color.pill)
                         .foregroundStyle(Color.background)
                         .clipShape(Capsule())
@@ -130,12 +142,12 @@ struct CurrentPlayerView: View {
                     Button("Next") {
                         handleNextPlayer()
                     }
-                    .padding(20)
+                    .padding()
                     .background(Color.pill)
                     .foregroundStyle(Color.background)
                     .clipShape(Capsule())
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal)
             }
             .frame(maxWidth: .infinity)
             .frame(maxHeight: .infinity, alignment: .top)
@@ -145,7 +157,8 @@ struct CurrentPlayerView: View {
     }
     
     func handleCurrentRoundScoreChange(amount: Int) {
-        currentRoundScore += amount
+        leaderboardData.roundScore += amount
+        updateTVData()
     }
     
     func handleBackPlayer() {
@@ -154,16 +167,16 @@ struct CurrentPlayerView: View {
         // Only update if we got valid data back
         if let previousPlayer = previousPlayer {
             player = previousPlayer
-            currentRoundScore = lastScore ?? 0
+            leaderboardData.roundScore = lastScore ?? 0
         }
         
         updateTVData()
     }
     
     func handleNextPlayer() {
-        leaderboardData.addPlayerScore(id: player.id, score: currentRoundScore)
+        leaderboardData.addPlayerScore(id: player.id, score: leaderboardData.roundScore)
         customAdd = ""
-        currentRoundScore = 0
+        leaderboardData.roundScore = 0
             
         // Only update if there's a next player
         if let nextPlayer = leaderboardData.nextPlayer() {
