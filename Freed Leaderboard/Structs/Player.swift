@@ -10,7 +10,7 @@ import Foundation
 struct Player: Codable, Identifiable, Equatable {
     var id: UUID
     var name: String
-    var history: [Int]
+    private(set) var history: [Int]
     
     init(_ name: String, history: [Int] = []) {
         self.id = UUID()
@@ -18,13 +18,34 @@ struct Player: Codable, Identifiable, Equatable {
         self.history = history
     }
 
-    mutating func addScore(score: Int) {
-        history.append(score)
+    mutating func addScore(score: Int, at index: Int? = nil) {
+        if let index = index {
+            guard index >= 0 && index <= history.count else {
+                print("Warning: Index out of bounds")
+                return
+            }
+            if index == history.count {
+                // If index equals count, we're appending to the end
+                history.append(score)
+            } else {
+                // Otherwise, we're replacing an existing element
+                history[index] = score
+            }
+        } else {
+            history.append(score)
+        }
     }
     
     mutating func popLastScore() -> Int? {
         let lastScore = history.popLast()
         return lastScore
+    }
+    
+    func score(at index: Int) -> Int? {
+        guard index >= 0 && index < history.count else {
+            return nil
+        }
+        return history[index]
     }
     
     mutating func resetScore() {
