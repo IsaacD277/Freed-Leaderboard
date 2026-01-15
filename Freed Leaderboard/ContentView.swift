@@ -72,6 +72,7 @@ struct ContentView: View {
                 NavigationView {
                     ConnectionView()
                 }
+                .presentationDetents([.medium])
             }
             .sheet(isPresented: $isSettingUpPlayers) {
                 NavigationView {
