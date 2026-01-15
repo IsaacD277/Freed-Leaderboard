@@ -20,7 +20,8 @@ struct SidebarView: View {
                     .foregroundColor(Color.accent)
                     .padding(.bottom)
             } else {
-                CurrentPlayerStats(player: leaderboardData.getCurrentPlayer())
+                CurrentPlayerStats(player: leaderboardData.getCurrentPlayer(),
+                                   round: leaderboardData.round)
                 
                 NeighborDifferences()
                 

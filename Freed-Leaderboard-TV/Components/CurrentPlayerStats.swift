@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CurrentPlayerStats: View {
     let player: Player?
+    let round: Int
     
     var body: some View {
         Group {
@@ -34,7 +35,7 @@ struct CurrentPlayerStats: View {
                         .foregroundColor(Color.accent)
                     
                     HStack(spacing: 15) {
-                        ForEach(Array(player!.getLast3Turns()), id: \.self) { l in
+                        ForEach(Array(player!.getLast3Turns(before: round-1)), id: \.self) { l in
                             Text("\(l)")
                                 .font(.title3)
                                 .bold()
@@ -60,5 +61,5 @@ struct CurrentPlayerStats: View {
 }
 
 #Preview {
-    CurrentPlayerStats(player: Player.example)
+    CurrentPlayerStats(player: Player.example, round: 1)
 }

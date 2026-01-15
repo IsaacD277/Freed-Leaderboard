@@ -56,8 +56,10 @@ struct Player: Codable, Identifiable, Equatable {
         history.reduce(0, +)
     }
     
-    func getLast3Turns() -> [Int] {
-        Array(history.suffix(3))
+    func getLast3Turns(before index: Int) -> [Int] {
+        guard index > 0 else { return [] }
+        let startIndex = max(0, index - 3)
+        return Array(history[startIndex..<index])
     }
     
     static func == (lhs: Player, rhs: Player) -> Bool {
