@@ -11,11 +11,14 @@ struct CurrentPlayerView: View {
     @Environment(LeaderboardData.self) private var leaderboardData
     @Environment(LocalNetworkSessionCoordinator.self) private var localNetwork
     
-    @State var player: Player
+    private var player: Player {
+        leaderboardData.getCurrentPlayer()
+    }
     @State var customAdd: String = "0"
     @State var task: Task<Void, Never>? = nil  // reference to the task
     @State var isRunning: Bool = false
     @FocusState private var keyboardFocus: Bool
+    @State private var roundPickerOpen: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -144,27 +147,43 @@ struct CurrentPlayerView: View {
                 
                 Spacer()
                 
-                HStack() {
+                HStack(alignment: .center) {
                     
-                    if (leaderboardData.round > 1 || leaderboardData.currentPlayerIndex > 0){
-                        Button("Back") {
-                            handleBackPlayer()
+                    // Left side
+                    HStack {
+                        if (leaderboardData.round > 1 || leaderboardData.currentPlayerIndex > 0){
+                            Button("Back") {
+                                handleBackPlayer()
+                            }
+                            .padding()
+                            .background(Color.pill)
+                            .foregroundStyle(Color.background)
+                            .clipShape(Capsule())
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    // Middle
+                    Button {
+                        roundPickerOpen.toggle()
+                    } label: {
+                        Text("Round \(leaderboardData.round)")
+                            .font(.title2)
+                            .bold()
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    }
+                    
+                    // Right side
+                    HStack {
+                        Button("Next") {
+                            handleNextPlayer()
                         }
                         .padding()
                         .background(Color.pill)
                         .foregroundStyle(Color.background)
                         .clipShape(Capsule())
                     }
-                    
-                    Spacer()
-                    
-                    Button("Next") {
-                        handleNextPlayer()
-                    }
-                    .padding()
-                    .background(Color.pill)
-                    .foregroundStyle(Color.background)
-                    .clipShape(Capsule())
+                    .frame(maxWidth: .infinity, alignment: .trailing)
                 }
                 .padding(.horizontal)
             }
@@ -172,40 +191,59 @@ struct CurrentPlayerView: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .background(Color.background)
             .foregroundStyle(Color.accent)
+            .sheet(isPresented: $roundPickerOpen) {
+                VStack {
+                    Text("Select Round")
+                        .font(.headline)
+                        .padding()
+                    
+                    Picker("Round", selection: Binding(get: { leaderboardData.round }, set: { leaderboardData.round = $0 })) {
+                        ForEach(1...max(1, leaderboardData.getHighestRoundNumber()), id: \.self) { i in
+                            Text("Round \(i)").tag(i)
+                        }
+                    }
+                    .pickerStyle(.wheel)
+                    .labelsHidden()
+                }
+                .presentationDetents([.fraction(0.3)])
+            }
+        }
+        .onAppear {
+            loadRoundScore()
+        }
+        .onChange(of: leaderboardData.currentPlayerIndex) { _, _ in
+            loadRoundScore()
+            updateTVData()
+        }
+        .onChange(of: leaderboardData.round) { _, _ in
+            loadRoundScore()
+            updateTVData()
         }
     }
     
-    func handleCurrentRoundScoreChange(amount: Int) {
+    private func loadRoundScore() {
+        leaderboardData.roundScore = leaderboardData.getPlayerRoundScore(id: player.id) ?? 0
+        customAdd = ""
+        updateTVData()
+    }
+    
+    private func handleCurrentRoundScoreChange(amount: Int) {
         leaderboardData.roundScore += amount
         updateTVData()
     }
     
-    func handleBackPlayer() {
-        let (previousPlayer, lastScore) = leaderboardData.backPlayer()
-        
-        // Only update if we got valid data back
-        if let previousPlayer = previousPlayer {
-            player = previousPlayer
-            leaderboardData.roundScore = lastScore ?? 0
-        }
-        
-        updateTVData()
+    private func handleBackPlayer() {
+        _ = leaderboardData.backPlayer()
     }
     
-    func handleNextPlayer() {
+    private func handleNextPlayer() {
         leaderboardData.addPlayerScore(id: player.id, score: leaderboardData.roundScore)
-        customAdd = ""
-            
-        // Only update if there's a next player
-        if let nextPlayer = leaderboardData.nextPlayer() {
-            player = nextPlayer
-            leaderboardData.roundScore = leaderboardData.getPlayerRoundScore(id: player.id) ?? 0
-        }
+        _ = leaderboardData.nextPlayer()
+
         
-        updateTVData()
     }
     
-    func updateTVData() {
+    private func updateTVData() {
         try? localNetwork.broadcastData(leaderboardData)
         leaderboardData.saveLocally()
     }
@@ -214,7 +252,7 @@ struct CurrentPlayerView: View {
 
 #Preview {
     let leaderboardData = LeaderboardData(players: Player.samplePlayers)
-    CurrentPlayerView(player: leaderboardData.players.first ?? Player.example)
+    CurrentPlayerView()
         .environment(leaderboardData)
         .environment(LocalNetworkSessionCoordinator())
 }
