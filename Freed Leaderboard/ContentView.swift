@@ -37,7 +37,13 @@ struct ContentView: View {
                     Button {
                         isViewingLeaderboard.toggle()
                     } label: {
-                        isViewingLeaderboard ? Image(systemName: "dice"): Image(systemName: "list.number")
+                        if (isViewingLeaderboard) {
+                            Image(systemName: "dice")
+                                .foregroundStyle(Color.background)
+                        } else {
+                            Image(systemName: "list.number")
+                                .foregroundStyle(Color.background)
+                        }
                     }
                 }
                 ToolbarItem {

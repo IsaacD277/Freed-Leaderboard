@@ -10,6 +10,8 @@ import SwiftUI
 struct CustomNumberPad: View {
     @Binding var value: String
     @Binding var roundValue: Int
+    @State var isStarted = false
+    var onAutoAdd = {}
     
     let columns = [
         GridItem(.flexible()),
@@ -27,9 +29,9 @@ struct CustomNumberPad: View {
                         } else {
                             value += "\(number)"
                         }
+                        self.onAutoAdd()
                     }
                 }
-                
                 
                 NumberButton(number: "C") {
                     if value == "0" {
@@ -42,6 +44,7 @@ struct CustomNumberPad: View {
                     if value != "0" {
                         value += "0"
                     }
+                    self.onAutoAdd()
                 }
 
                 NumberButton(number: "⌫") {
@@ -50,11 +53,16 @@ struct CustomNumberPad: View {
                     } else {
                         value = "0"
                     }
+                    self.onAutoAdd()
                 }
                 
             }
         }
         .padding(.horizontal)
+    }
+    
+    func onAutoAdd(_ callback: @escaping () -> ()) -> some View {
+        CustomNumberPad(value: self.$value, roundValue: self.$roundValue, onAutoAdd: callback)
     }
 }
 

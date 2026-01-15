@@ -13,6 +13,8 @@ struct CurrentPlayerView: View {
     
     @State var player: Player
     @State var customAdd: String = "0"
+    @State var task: Task<Void, Never>? = nil  // reference to the task
+    @State var isRunning: Bool = false
     @FocusState private var keyboardFocus: Bool
     
     var body: some View {
@@ -90,6 +92,7 @@ struct CurrentPlayerView: View {
                     
                     VStack(spacing:5) {
                         Button("+") {
+                            self.task?.cancel()
                             handleCurrentRoundScoreChange(amount: Int(customAdd) ?? 0);
                             customAdd = ""
                         }
@@ -101,6 +104,7 @@ struct CurrentPlayerView: View {
                         .clipShape(Capsule())
                         
                         Button("-") {
+                            self.task?.cancel()
                             handleCurrentRoundScoreChange(amount: -(Int(customAdd) ?? 0));
                             customAdd = ""
                         }
@@ -122,6 +126,21 @@ struct CurrentPlayerView: View {
                     value: $customAdd,
                     roundValue: Binding(get: { leaderboardData.roundScore }, set: { leaderboardData.roundScore = $0 })
                 )
+                .onAutoAdd {
+                    self.task?.cancel()
+                    
+                    self.task = Task {
+                        do {
+                            try await Task.sleep(nanoseconds: 1_500_000_000)
+                            handleCurrentRoundScoreChange(amount: Int(customAdd) ?? 0);
+                            customAdd = ""
+                        } catch is CancellationError {
+                            print("Task was cancelled")
+                        } catch {
+                            print("ooops! \(error)")
+                        }
+                    }
+                }
                 
                 Spacer()
                 
