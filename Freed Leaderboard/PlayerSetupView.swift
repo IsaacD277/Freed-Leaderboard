@@ -47,7 +47,7 @@ struct PlayerSetupView: View {
                 }
             }
             .confirmationDialog("Reset scores for all players?", isPresented: $isResettingScores) {
-                Button("Reset", role: .destructive) {
+                Button("Reset Scores", role: .destructive) {
                     for i in 0..<leaderboardData.players.count {
                         leaderboardData.players[i].resetScore()
                     }

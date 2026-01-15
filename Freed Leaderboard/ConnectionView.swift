@@ -36,6 +36,21 @@ struct ConnectionView: View {
                             Spacer()
                             Button {
                                 localNetwork.invitePeer(peerID: peerID)
+                                Task {
+                                    do {
+                                        print("Starting Sleep")
+                                        try await Task.sleep(nanoseconds: 750_000_000)
+                                        print("Stopped Sleeping")
+                                        try? localNetwork.broadcastData(leaderboardData)
+                                        print("Done broadcasting")
+                                        leaderboardData.saveLocally()
+                                        print("Saved")
+                                    } catch is CancellationError {
+                                        print("Task was cancelled")
+                                    } catch {
+                                        print("ooops! \(error)")
+                                    }
+                                }
                             } label: {
                                 Image(systemName: "plus.circle")
                             }
