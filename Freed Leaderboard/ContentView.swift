@@ -28,7 +28,7 @@ struct ContentView: View {
                     if (isViewingLeaderboard) {
                         LeaderboardView()
                     } else {
-                        CurrentPlayerView(player: leaderboardData.getCurrentPlayer())
+                        CurrentPlayerView()
                     }
                 }
             }

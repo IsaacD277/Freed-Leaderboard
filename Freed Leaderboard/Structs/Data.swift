@@ -15,8 +15,16 @@ import SwiftUI
     }
     
     func addPlayer(newPlayer: Player) {
-        players.append(newPlayer)
+        let highestRound = getHighestRoundNumber()
+        var player = newPlayer
+        
+        // ensure new player has filled in zeros for all rounds missed
+        while player.history.count < highestRound {
+            player.addScore(score: 0, at: player.history.count)
+        }
+        players.append(player)
     }
+    
     func removePlayer(id: UUID) {
         players.removeAll {$0.id == id }
     }
@@ -26,7 +34,20 @@ import SwiftUI
     }
     
     func getPreviousScore() -> Int? {
-        return getPreviousPlayer()?.history.last
+        guard !players.isEmpty else { return nil }
+        guard round > 0 else { return nil }
+        let previousPlayer = getPreviousPlayer()
+        let targetIndex: Int
+        if currentPlayerIndex == 0 {
+            // If we're at the first player, previous player's relevant round is (round - 2)
+            targetIndex = round - 2
+        } else {
+            // Otherwise, previous player's relevant round is (round - 1)
+            targetIndex = round - 1
+        }
+        guard let prev = previousPlayer, targetIndex >= 0 else { return nil }
+        return prev.score(at: targetIndex)
+        
     }
     
     func getPlayerPlace(id: UUID) -> Int? {
@@ -60,7 +81,7 @@ import SwiftUI
         currentPlayerIndex += 1
         if currentPlayerIndex >= players.count {
             currentPlayerIndex = 0
-            round += 1
+            incrementRound()
         }
         return players[currentPlayerIndex]
     }
@@ -139,7 +160,7 @@ import SwiftUI
                 return nil // or return 0 if you want a default
             }
 
-            return player.history[targetIndex]
+            return player.score(at: targetIndex)
         }
         return nil
     }
@@ -161,6 +182,23 @@ import SwiftUI
         self.roundScore = 0
         self.currentPlayerIndex = 0
         self.round = 1
+    }
+    
+    private func incrementRound() {
+        round += 1
+        let targetIndex = round - 1
+        
+        // Ensure ALL players have entries up to and including the new round
+        for i in players.indices {
+            while players[i].history.count <= targetIndex {
+                players[i].addScore(score: 0, at: players[i].history.count)
+            }
+        }
+    }
+    
+    func getHighestRoundNumber() -> Int {
+        guard !players.isEmpty else { return 0 }
+        return players.map { $0.history.count }.max() ?? 0
     }
     
     static func == (lhs: LeaderboardData, rhs: LeaderboardData) -> Bool {
