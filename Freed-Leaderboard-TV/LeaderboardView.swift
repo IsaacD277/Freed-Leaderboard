@@ -25,14 +25,11 @@ struct LeaderboardView: View {
                         .padding(.vertical)
                         .background(Color.background)
                     
-                    ScrollView(showsIndicators: true) {
-                        LeaderboardGrid(players: leaderboardData.getLeaderboard())
-                            .frame(width: geometry.size.width * 2/3)
-                    }
-                    .padding(.horizontal)
-                    .background(Color.background)
+                    LeaderboardGrid(players: leaderboardData.getLeaderboard())
                 }
+                .frame(width: geometry.size.width * 2/3)
                 .background(Color.background)
+                
                 
                 // Divider
                 Rectangle()
