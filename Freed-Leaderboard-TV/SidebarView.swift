@@ -23,24 +23,26 @@ struct SidebarView: View {
                 CurrentPlayerStats(player: leaderboardData.getCurrentPlayer(),
                                    round: leaderboardData.round)
                 
-                NeighborDifferences()
-                
-                Spacer()
-                
                 VStack(spacing: 16) {
-                    if let previousScore = leaderboardData.getPreviousScore() {
-                        Text("Previous Score: \(previousScore)")
+                    if (leaderboardData.roundScore == 0) {
+                        if let previousScore = leaderboardData.getPreviousScore() {
+                            Text("Previous Score: \(previousScore)")
+                                .font(.system(size: 40))
+                                .bold()
+                                .foregroundColor(Color.accent)
+                        }
+                    } else {
+                        Text("Current Round: \(leaderboardData.roundScore)")
                             .font(.system(size: 40))
                             .bold()
                             .foregroundColor(Color.accent)
                     }
-                    
-                    Text("Round Score: \(leaderboardData.roundScore)")
-                        .font(.system(size: 60))
-                        .bold()
-                        .foregroundColor(Color.accent)
-                        .padding(.bottom)
                 }
+                
+                Spacer()
+                
+                NeighborDifferences()
+                    .padding(.bottom)
                 
                 if let nextPlayer = leaderboardData.getNextPlayer() {
                     Text("Next up: \(nextPlayer.name)")

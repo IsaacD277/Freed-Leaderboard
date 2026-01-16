@@ -29,21 +29,32 @@ struct CurrentPlayerStats: View {
                         .background(Color.pill)
                         .foregroundColor(Color.background)
                         .clipShape(Capsule())
-                    
-                    Text("Previous 3 Turns:")
-                        .font(.headline)
-                        .foregroundColor(Color.accent)
-                    
-                    HStack(spacing: 15) {
-                        ForEach(Array(player!.getLast3Turns(before: round-1)), id: \.self) { l in
-                            Text("\(l)")
-                                .font(.title3)
-                                .bold()
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical)
-                                .background(Color.pill)
-                                .foregroundColor(Color.background)
-                                .clipShape(Capsule())
+                    if (round > 1) {
+                        if (round == 2) {
+                            Text("Previous Turn:")
+                                .font(.headline)
+                                .foregroundColor(Color.accent)
+                        } else if (round == 3) {
+                            Text("Previous 2 Turns:")
+                                .font(.headline)
+                                .foregroundColor(Color.accent)
+                        } else {
+                            Text("Previous 3 Turns:")
+                                .font(.headline)
+                                .foregroundColor(Color.accent)
+                        }
+                        
+                        HStack(spacing: 15) {
+                            ForEach(Array(player!.getLast3Turns(before: round-1)), id: \.self) { l in
+                                Text("\(l)")
+                                    .font(.title3)
+                                    .bold()
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical)
+                                    .background(Color.pill)
+                                    .foregroundColor(Color.background)
+                                    .clipShape(Capsule())
+                            }
                         }
                     }
                 }
