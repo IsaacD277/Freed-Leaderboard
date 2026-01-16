@@ -13,6 +13,7 @@ struct PlayerHistoryView: View {
     let onClose: () -> Void
     
     @FocusState private var isCloseButtonFocused: Bool
+    @FocusState private var focusedHistoryIndex: Int?
     
     var body : some View {
         VStack(spacing:16) {
@@ -31,52 +32,41 @@ struct PlayerHistoryView: View {
                 .foregroundColor(Color.background)
                 .clipShape(Capsule())
             
-            VStack() {
+            ScrollView() {
                 ForEach(Array(player.history.indices.reversed()), id: \.self) {index in
                     let value = player.history[index]
-                    let runningTotal = player.history[0...index].reduce(0, +)
+                    let runningTotal = player.history.prefix(index + 1).reduce(0, +)
                     
-                    HStack {
+                    HStack(spacing: 0) {
                         Text("\(index+1).")
+                            .frame(width:100)
                             .bold()
+            
                         Text("\(value)")
+                            .padding(.leading, 30)
                         
                         Spacer()
                         
                         Text("→ \(runningTotal)")
                             .bold()
                     }
+                    .contentShape(Rectangle())
+                    .focused($focusedHistoryIndex, equals: index)
+                    .focusable()
+                    .onAppear { if focusedHistoryIndex == nil { focusedHistoryIndex = player.history.indices.last } }
                 }
             }
-            .font(.title3)
+            .font(.title3.monospacedDigit())
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 50)
             .padding(.vertical, 30)
             .background(Color.pill)
             .foregroundColor(Color.background)
             .clipShape(RoundedRectangle(cornerRadius: 50))
-            
-            Button("Close") {
-                onClose()
-            }
-            .buttonStyle(.plain)
-            .padding()
-            .background(Color.pill)
-            .foregroundColor(Color.background)
-            .clipShape(Capsule())
-            .overlay(
-                Capsule()
-                    .stroke(isCloseButtonFocused ? Color.blue : Color.clear, lineWidth: 6)
-                    .padding(-3) // Offset to place border outside
-            )
-            .focused($isCloseButtonFocused)
-            .scaleEffect(isCloseButtonFocused ? 1.05 : 1.0)
-            .animation(.easeInOut(duration: 0.2), value: isCloseButtonFocused)
-            .padding(.top, 50)
-            
         }
         .frame(maxWidth:.infinity, maxHeight: .infinity)
         .background(Color.background)
+        .onAppear { if focusedHistoryIndex == nil { focusedHistoryIndex = player.history.indices.last } }
     }
 }
 
