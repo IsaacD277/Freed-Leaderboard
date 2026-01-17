@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PlayerHistoryView: View {
-    
     let player: Player
     let onClose: () -> Void
     
