@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -48,17 +48,13 @@
 /* Begin PBXFrameworksBuildPhase section */
 		6B1315EB2F0855CA0062FCD4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6B1316142F0876670062FCD4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -95,14 +91,10 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-			);
 			fileSystemSynchronizedGroups = (
 				6B1315F02F0855CA0062FCD4 /* Freed Leaderboard */,
 			);
 			name = "Freed Leaderboard";
-			packageProductDependencies = (
-			);
 			productName = "Freed Leaderboard";
 			productReference = 6B1315EE2F0855CA0062FCD4 /* Freed Leaderboard.app */;
 			productType = "com.apple.product-type.application";
@@ -117,14 +109,10 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-			);
 			fileSystemSynchronizedGroups = (
 				6B1316182F0876670062FCD4 /* Freed-Leaderboard-TV */,
 			);
 			name = "Freed-Leaderboard-TV";
-			packageProductDependencies = (
-			);
 			productName = "Freed-Leaderboard-TV";
 			productReference = 6B1316172F0876670062FCD4 /* Freed-Leaderboard-TV.app */;
 			productType = "com.apple.product-type.application";
@@ -156,7 +144,7 @@
 			);
 			mainGroup = 6B1315E52F0855CA0062FCD4;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
+			preferredProjectObjectVersion = 90;
 			productRefGroup = 6B1315EF2F0855CA0062FCD4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -170,40 +158,32 @@
 /* Begin PBXResourcesBuildPhase section */
 		6B1315EC2F0855CA0062FCD4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				4FA25C452F1482E600BA9F1D /* .gitignore in Resources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6B1316152F0876670062FCD4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6B1315EA2F0855CA0062FCD4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6B1316132F0876670062FCD4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		6B1315F72F0855CB0062FCD4 /* Debug */ = {
+		6B1315F72F0855CB0062FCD4 /* Debug configuration for PBXProject "Freed Leaderboard" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -265,7 +245,7 @@
 			};
 			name = Debug;
 		};
-		6B1315F82F0855CB0062FCD4 /* Release */ = {
+		6B1315F82F0855CB0062FCD4 /* Release configuration for PBXProject "Freed Leaderboard" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -319,11 +299,12 @@
 			};
 			name = Release;
 		};
-		6B1315FA2F0855CB0062FCD4 /* Debug */ = {
+		6B1315FA2F0855CB0062FCD4 /* Debug configuration for PBXNativeTarget "Freed Leaderboard" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L65QKDD477;
@@ -353,6 +334,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.isaacd2.Freed-Leaderboard";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -368,11 +350,12 @@
 			};
 			name = Debug;
 		};
-		6B1315FB2F0855CB0062FCD4 /* Release */ = {
+		6B1315FB2F0855CB0062FCD4 /* Release configuration for PBXNativeTarget "Freed Leaderboard" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L65QKDD477;
@@ -402,6 +385,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.isaacd2.Freed-Leaderboard";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -417,7 +401,7 @@
 			};
 			name = Release;
 		};
-		6B1316202F0876690062FCD4 /* Debug */ = {
+		6B1316202F0876690062FCD4 /* Debug configuration for PBXNativeTarget "Freed-Leaderboard-TV" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
@@ -436,7 +420,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.isaacd2.Freed-Leaderboard-TV";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.isaacd2.Freed-Leaderboar-TV";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -450,7 +434,7 @@
 			};
 			name = Debug;
 		};
-		6B1316212F0876690062FCD4 /* Release */ = {
+		6B1316212F0876690062FCD4 /* Release configuration for PBXNativeTarget "Freed-Leaderboard-TV" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
@@ -469,7 +453,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.isaacd2.Freed-Leaderboard-TV";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.isaacd2.Freed-Leaderboar-TV";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -490,28 +474,25 @@
 		6B1315E92F0855CA0062FCD4 /* Build configuration list for PBXProject "Freed Leaderboard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6B1315F72F0855CB0062FCD4 /* Debug */,
-				6B1315F82F0855CB0062FCD4 /* Release */,
+				6B1315F72F0855CB0062FCD4 /* Debug configuration for PBXProject "Freed Leaderboard" */,
+				6B1315F82F0855CB0062FCD4 /* Release configuration for PBXProject "Freed Leaderboard" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		6B1315F92F0855CB0062FCD4 /* Build configuration list for PBXNativeTarget "Freed Leaderboard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6B1315FA2F0855CB0062FCD4 /* Debug */,
-				6B1315FB2F0855CB0062FCD4 /* Release */,
+				6B1315FA2F0855CB0062FCD4 /* Debug configuration for PBXNativeTarget "Freed Leaderboard" */,
+				6B1315FB2F0855CB0062FCD4 /* Release configuration for PBXNativeTarget "Freed Leaderboard" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		6B13161F2F0876690062FCD4 /* Build configuration list for PBXNativeTarget "Freed-Leaderboard-TV" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6B1316202F0876690062FCD4 /* Debug */,
-				6B1316212F0876690062FCD4 /* Release */,
+				6B1316202F0876690062FCD4 /* Debug configuration for PBXNativeTarget "Freed-Leaderboard-TV" */,
+				6B1316212F0876690062FCD4 /* Release configuration for PBXNativeTarget "Freed-Leaderboard-TV" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */

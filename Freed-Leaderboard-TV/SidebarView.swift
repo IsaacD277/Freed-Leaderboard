@@ -20,6 +20,14 @@ struct SidebarView: View {
                     .foregroundColor(Color.accent)
                     .padding(.bottom)
             } else {
+                Text("Round \(leaderboardData.round)")
+                    .frame(maxWidth: .infinity)
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(Color.accent)
+                    .padding(.vertical)
+                    .background(Color.background)
+                
                 CurrentPlayerStats(player: leaderboardData.getCurrentPlayer(),
                                    round: leaderboardData.round)
                 

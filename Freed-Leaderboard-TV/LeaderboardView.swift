@@ -17,7 +17,7 @@ struct LeaderboardView: View {
             HStack(spacing: 0) {
                 // Column 1 - Leaderboard
                 VStack(spacing: 0) {
-                    Text("Freed Leaderboard - Round \(leaderboardData.round)")
+                    Text("Freed Leaderboard")
                         .frame(maxWidth: .infinity)
                         .font(.largeTitle)
                         .bold()
